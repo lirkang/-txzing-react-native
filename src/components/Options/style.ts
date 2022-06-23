@@ -6,16 +6,13 @@
  * @Software Visual Studio Code
  */
 
-import {
-  BORDER_COLOR,
-  LIGHT_BACKGROUND_COLOR
-} from '@/common/constant/theme-base.string'
 import { Dimensions, StyleSheet } from 'react-native'
+import { theme } from '../../..'
 
 const selectStyle = StyleSheet.create({
   modalStyle: { justifyContent: 'flex-end', alignItems: 'center' },
   container: {
-    backgroundColor: LIGHT_BACKGROUND_COLOR,
+    backgroundColor: theme.getTheme.lightBackground,
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
     minHeight: Dimensions.get('window').height * 0.4,
@@ -28,7 +25,7 @@ const selectStyle = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: BORDER_COLOR,
+    borderBottomColor: theme.getTheme.border,
     paddingBottom: 4
   },
   title: { fontWeight: 'bold', fontSize: 20 },

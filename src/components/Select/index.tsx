@@ -32,7 +32,7 @@ const Select = ({
   return (
     <Modal
       visible={visible}
-      onOutsidePress={() => onChannelPress?.(false)}
+      onCannel={() => onChannelPress?.(false)}
       modalStyle={{ justifyContent: 'flex-end' }}
     >
       <View style={optionStyle.container}>

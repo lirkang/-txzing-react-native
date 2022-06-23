@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "txzing react-native common package",
   "main": "index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {},
   "keywords": [
     "react-native",

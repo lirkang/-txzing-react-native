@@ -6,11 +6,6 @@
  * @Software Visual Studio Code
  */
 
-import {
-  PRIMARY_ACCENT_COLOR,
-  REGULAR_TEXT
-} from '@/common/constant/theme-base.string'
-import Button from '@/component/base/Button'
 import React, { useState } from 'react'
 import {
   Dimensions,
@@ -20,7 +15,9 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import Modal from './Modal'
+import { theme } from '../../..'
+import Button from '../Button'
+import Modal from '../Modal'
 import selectStyle from './style'
 
 interface SelectProps {
@@ -47,10 +44,9 @@ const Option = ({
 
   return (
     <Modal
-      animationType={'slide'}
       modalStyle={selectStyle.modalStyle}
       visible={visible}
-      onOutsidePress={() => onOutsidePress?.(false)}
+      onCannel={() => onOutsidePress?.(false)}
     >
       <View style={selectStyle.container}>
         <View style={selectStyle.headerContainer}>
@@ -113,8 +109,8 @@ const Option = ({
                       fontSize: index === currentIndex ? 20 : 16,
                       color:
                         index === currentIndex
-                          ? PRIMARY_ACCENT_COLOR
-                          : REGULAR_TEXT
+                          ? theme.getTheme.accent
+                          : theme.getTheme.regularText
                     }}
                   >
                     {item.title}

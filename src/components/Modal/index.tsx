@@ -22,19 +22,19 @@ interface ModalProps {
   visible?: boolean
   children?: JSX.Element | Array<JSX.Element>
   modalStyle?: ViewStyle
-  onOutsidePress?: (bool: false) => void
-  animationType?: 'fade' | 'none' | 'slide'
+  onCannel?: (bool: false) => void
   backgroundOpacity?: number
   dark?: boolean
   cancelable?: boolean
-  hasToast?: boolean
+  onShow?: () => void
 }
 
 const Modal = ({
   visible,
   children,
   modalStyle,
-  onOutsidePress,
+  onCannel,
+  onShow,
   backgroundOpacity = 100,
   dark = true,
   cancelable = true
@@ -47,12 +47,13 @@ const Modal = ({
   return (
     <RNModal
       pointerEvents={'none'}
-      onRequestClose={() => onOutsidePress?.(false)}
+      onRequestClose={() => onCannel?.(false)}
       visible={visible}
       animationType={'none'}
       hardwareAccelerated
       transparent
       statusBarTranslucent
+      onShow={onShow}
     >
       <AnimatedView
         style={[
@@ -64,7 +65,7 @@ const Modal = ({
         ]}
       >
         <TouchableOpacity
-          onPress={() => cancelable && onOutsidePress?.(false)}
+          onPress={() => cancelable && onCannel?.(false)}
           activeOpacity={1}
           style={[{ backgroundColor }, StyleSheet.absoluteFill, modalStyle]}
         >
