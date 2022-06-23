@@ -7,6 +7,7 @@
 import { animated, useSpring } from '@react-spring/native'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
+import { Consumer } from '../Provider'
 
 type ToastRef = {
   showToast?: (
@@ -50,33 +51,37 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
   }))
 
   return (
-    <AnimatedView
-      pointerEvents={'none'}
-      style={[
-        StyleSheet.absoluteFill,
-        toastStyle[location],
-        { alignItems: 'center' },
-        useSpring({
-          from: { opacity: toastVisible ? 0 : 1 },
-          to: { opacity: toastVisible ? 1 : 0 }
-        })
-      ]}
-    >
-      <Text
-        style={[
-          {
-            paddingVertical: title ? 12 : 0,
-            paddingHorizontal: title ? 20 : 0,
-            color: '#ffffffee',
-            borderRadius: 50,
-            backgroundColor: '#00000090',
-            fontSize: 15
-          }
-        ]}
-      >
-        {title}
-      </Text>
-    </AnimatedView>
+    <Consumer>
+      {props => (
+        <AnimatedView
+          pointerEvents={'none'}
+          style={[
+            StyleSheet.absoluteFill,
+            toastStyle[location],
+            { alignItems: 'center' },
+            useSpring({
+              from: { opacity: toastVisible ? 0 : 1 },
+              to: { opacity: toastVisible ? 1 : 0 }
+            })
+          ]}
+        >
+          <Text
+            style={[
+              {
+                paddingVertical: title ? 12 : 0,
+                paddingHorizontal: title ? 20 : 0,
+                color: '#ffffffee',
+                borderRadius: 50,
+                backgroundColor: '#00000090',
+                fontSize: 15
+              }
+            ]}
+          >
+            {title}
+          </Text>
+        </AnimatedView>
+      )}
+    </Consumer>
   )
 })
 

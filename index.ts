@@ -5,17 +5,32 @@
  */
 
 import setGlobalProps from 'react-native-props'
-import Storage from './src/class/Storage'
-import theme from './src/class/Theme'
+import Storage from './src/common/Storage'
+import { createTheme, defaultTheme } from './src/common/Theme'
 import Button from './src/components/Button'
 import Modal from './src/components/Modal'
 import Options from './src/components/Options'
+import { Provider } from './src/components/Provider'
 import Select from './src/components/Select'
 import Toast from './src/components/Toast'
 import useAsyncFocusCallbackEffect from './src/hooks/useAsyncFocusCallbackEffect'
 import useForceUpdate from './src/hooks/useForceUpdate'
 import useKeysState from './src/hooks/useKeysState'
 import useRedux from './src/hooks/useRedux'
+
+setGlobalProps('ScrollView', {
+  showsVerticalScrollIndicator: false,
+  showsHorizontalScrollIndicator: false
+})('Text', {
+  allowFontScaling: false,
+  numberOfLines: 1
+})('TextInput', {
+  allowFontScaling: false,
+  numberOfLines: 1,
+  style: [{ paddingVertical: 0 }]
+})('Image', {
+  resizeMode: 'cover'
+})
 
 export {
   Storage,
@@ -29,5 +44,7 @@ export {
   Options,
   Select,
   setGlobalProps,
-  theme
+  Provider,
+  defaultTheme,
+  createTheme
 }

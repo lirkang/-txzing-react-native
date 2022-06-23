@@ -1,10 +1,14 @@
 {
   "name": "@txzing/react-native",
-  "version": "1.0.1",
+  "version": "1.0.9",
   "description": "txzing react-native common package",
   "main": "index.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LIiErkang/-txzing-react-native"
   },
   "scripts": {},
   "keywords": [

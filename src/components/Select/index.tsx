@@ -15,8 +15,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { theme, useForceUpdate } from '../../..'
 import Modal from '../Modal'
+import { Consumer } from '../Provider'
 
 interface SelectItem {
   title: string
@@ -36,62 +36,64 @@ const Select = ({
   onItemPress,
   visible
 }: SelectProps) => {
-  const forceUpdate = useForceUpdate()
-
-  theme.addListener(forceUpdate)
-
   return (
-    <Modal
-      visible={visible}
-      onCannel={() => onChannelPress?.(false)}
-      modalStyle={{ justifyContent: 'flex-end' }}
-    >
-      <View
-        style={{
-          backgroundColor: '#ffffff',
-          borderTopRightRadius: 12,
-          borderTopLeftRadius: 12,
-          overflow: 'hidden',
-          paddingBottom: 24
-        }}
-      >
-        <ScrollView
-          style={{
-            maxHeight: Dimensions.get('window').height * 0.4,
-            borderBottomColor: '#f6f6f7',
-            borderBottomWidth: 6
-          }}
+    <Consumer>
+      {props => (
+        <Modal
+          visible={visible}
+          onCannel={() => onChannelPress?.(false)}
+          modalStyle={{ justifyContent: 'flex-end' }}
         >
-          {options.map((item, index) => (
-            <TouchableOpacity
-              onPress={() => {
-                item.onPress?.(index)
-                onItemPress?.(item, index)
-              }}
+          <View
+            style={{
+              backgroundColor: '#ffffff',
+              borderTopRightRadius: 12,
+              borderTopLeftRadius: 12,
+              overflow: 'hidden',
+              paddingBottom: 24
+            }}
+          >
+            <ScrollView
               style={{
-                paddingVertical: 20,
-                borderBottomColor: theme.getTheme.border,
-                borderBottomWidth: StyleSheet.hairlineWidth
+                maxHeight: Dimensions.get('window').height * 0.4,
+                borderBottomColor: '#f6f6f7',
+                borderBottomWidth: 6
               }}
-              key={item.title}
+            >
+              {options.map((item, index) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    item.onPress?.(index)
+                    onItemPress?.(item, index)
+                  }}
+                  style={{
+                    paddingVertical: 20,
+                    borderBottomColor: props.border,
+                    borderBottomWidth: StyleSheet.hairlineWidth
+                  }}
+                  key={item.title}
+                >
+                  <Text style={{ textAlign: 'center', fontSize: 16 }}>
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            <TouchableOpacity
+              style={{
+                paddingVertical: 16
+              }}
+              onPress={() => onChannelPress?.(false)}
             >
               <Text style={{ textAlign: 'center', fontSize: 16 }}>
-                {item.title}
+                {'取消'}
               </Text>
             </TouchableOpacity>
-          ))}
-        </ScrollView>
-
-        <TouchableOpacity
-          style={{
-            paddingVertical: 16
-          }}
-          onPress={() => onChannelPress?.(false)}
-        >
-          <Text style={{ textAlign: 'center', fontSize: 16 }}>{'取消'}</Text>
-        </TouchableOpacity>
-      </View>
-    </Modal>
+          </View>
+        </Modal>
+      )}
+    </Consumer>
   )
 }
 

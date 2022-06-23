@@ -13,7 +13,8 @@ import {
   TouchableOpacity,
   ViewStyle
 } from 'react-native'
-import { theme, useForceUpdate } from '../../..'
+import { Themes } from '../../common/Theme'
+import { Consumer } from '../Provider'
 
 interface ButtonProps {
   title?: string | JSX.Element
@@ -36,28 +37,24 @@ const Button = ({
   image,
   disabledPress
 }: ButtonProps) => {
-  const forceUpdate = useForceUpdate()
-
-  theme.addListener(forceUpdate)
-
-  function backgroundColor() {
+  function backgroundColor(theme: Themes) {
     if (disabled) {
-      return theme.getTheme.background
+      return theme.background
     }
 
     if (type === 'clear') {
-      return theme.getTheme.accent + '33'
+      return theme.accent + '33'
     }
 
     return (
       containerStyle?.backgroundColor ??
-      (type === 'text' ? undefined : theme.getTheme.accent)
+      (type === 'text' ? undefined : theme.accent)
     )
   }
 
-  function titleColor() {
+  function titleColor(theme: Themes) {
     if (disabled) {
-      return theme.getTheme.placeholderText
+      return theme.placeholderText
     }
 
     if (titleStyle?.color) {
@@ -65,42 +62,46 @@ const Button = ({
     }
 
     return titleStyle?.color ?? ['text', 'clear'].includes(type)
-      ? theme.getTheme.accent
-      : theme.getTheme.lightBackground
+      ? theme.accent
+      : theme.lightBackground
   }
 
   return (
-    <TouchableOpacity
-      onPress={() => (disabled ? disabledPress?.() : onPress?.())}
-      style={[
-        containerStyle,
-        {
-          backgroundColor: backgroundColor(),
-          paddingVertical: type === 'clear' ? 6 : 12,
-          paddingHorizontal: type === 'clear' ? 12 : 8,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 24
-        }
-      ]}
-    >
-      {image && <Image source={image} />}
+    <Consumer>
+      {props => (
+        <TouchableOpacity
+          onPress={() => (disabled ? disabledPress?.() : onPress?.())}
+          style={[
+            containerStyle,
+            {
+              backgroundColor: backgroundColor(props),
+              paddingVertical: type === 'clear' ? 6 : 12,
+              paddingHorizontal: type === 'clear' ? 12 : 8,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 24
+            }
+          ]}
+        >
+          {image && <Image source={image} />}
 
-      <Text
-        style={[
-          titleStyle,
-          {
-            color: titleColor(),
-            fontWeight: 'bold',
-            justifyContent: 'center',
-            fontSize: 15
-          }
-        ]}
-      >
-        {title}
-      </Text>
-    </TouchableOpacity>
+          <Text
+            style={[
+              titleStyle,
+              {
+                color: titleColor(props),
+                fontWeight: 'bold',
+                justifyContent: 'center',
+                fontSize: 15
+              }
+            ]}
+          >
+            {title}
+          </Text>
+        </TouchableOpacity>
+      )}
+    </Consumer>
   )
 }
 

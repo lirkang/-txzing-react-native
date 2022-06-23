@@ -17,6 +17,7 @@ import {
   View,
   ViewStyle
 } from 'react-native'
+import { Consumer } from '../Provider'
 
 interface ModalProps {
   visible?: boolean
@@ -45,34 +46,38 @@ const Modal = ({
   const AnimatedView = animated(View)
 
   return (
-    <RNModal
-      pointerEvents={'none'}
-      onRequestClose={() => onCannel?.(false)}
-      visible={visible}
-      animationType={'none'}
-      hardwareAccelerated
-      transparent
-      statusBarTranslucent
-      onShow={onShow}
-    >
-      <AnimatedView
-        style={[
-          { flex: 1 },
-          useSpring({
-            from: { opacity: Number(!visible) },
-            to: { opacity: Number(visible) }
-          })
-        ]}
-      >
-        <TouchableOpacity
-          onPress={() => cancelable && onCannel?.(false)}
-          activeOpacity={1}
-          style={[{ backgroundColor }, StyleSheet.absoluteFill, modalStyle]}
+    <Consumer>
+      {props => (
+        <RNModal
+          pointerEvents={'none'}
+          onRequestClose={() => onCannel?.(false)}
+          visible={visible}
+          animationType={'none'}
+          hardwareAccelerated
+          transparent
+          statusBarTranslucent
+          onShow={onShow}
         >
-          <TouchableOpacity activeOpacity={1}>{children}</TouchableOpacity>
-        </TouchableOpacity>
-      </AnimatedView>
-    </RNModal>
+          <AnimatedView
+            style={[
+              { flex: 1 },
+              useSpring({
+                from: { opacity: Number(!visible) },
+                to: { opacity: Number(visible) }
+              })
+            ]}
+          >
+            <TouchableOpacity
+              onPress={() => cancelable && onCannel?.(false)}
+              activeOpacity={1}
+              style={[{ backgroundColor }, StyleSheet.absoluteFill, modalStyle]}
+            >
+              <TouchableOpacity activeOpacity={1}>{children}</TouchableOpacity>
+            </TouchableOpacity>
+          </AnimatedView>
+        </RNModal>
+      )}
+    </Consumer>
   )
 }
 
