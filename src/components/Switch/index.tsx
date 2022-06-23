@@ -31,7 +31,7 @@ const Switch = ({ enabled, onChange, disabled }: SwitchProps) => {
             style={[
               {
                 position: 'relative',
-                backgroundColor: enabled ? theme.accent : theme.regularText,
+                backgroundColor: enabled ? theme.accent : theme.border,
                 borderRadius: theme.borderRadius * 8,
                 width: 48,
                 padding: 4

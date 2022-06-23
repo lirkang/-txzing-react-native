@@ -7,6 +7,7 @@
 import RNSlider from '@react-native-community/slider'
 import React from 'react'
 import { View } from 'react-native'
+import { IconSlider } from '../../assets'
 import { Consumer } from '../../common/ThemeProvider'
 
 interface SliderProps {
@@ -30,12 +31,12 @@ const Slider = ({
             step={1}
             maximumValue={maxValue}
             minimumTrackTintColor={theme.accent}
-            maximumTrackTintColor={theme.regularText}
+            maximumTrackTintColor={theme.border}
             onSlidingComplete={onSlidingComplete}
             onValueChange={onValueChange}
             value={value}
-            thumbImage={require('../../icon_close_car.png')}
-            style={[{ transform: [{ scaleY: 1.3 }] }]}
+            thumbImage={IconSlider}
+            style={[{ transform: [{ scaleY: 1.5 }] }]}
           />
         </View>
       )}
