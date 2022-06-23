@@ -15,10 +15,9 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { theme } from '../../..'
+import { theme, useForceUpdate } from '../../..'
 import Button from '../Button'
 import Modal from '../Modal'
-import selectStyle from './style'
 
 interface SelectProps {
   title?: string
@@ -42,14 +41,37 @@ const Option = ({
 }: SelectProps) => {
   const [index, setIndex] = useState(0)
 
+  const forceUpdate = useForceUpdate()
+
+  theme.addListener(forceUpdate)
+
   return (
     <Modal
-      modalStyle={selectStyle.modalStyle}
+      modalStyle={{ justifyContent: 'flex-end', alignItems: 'center' }}
       visible={visible}
       onCannel={() => onOutsidePress?.(false)}
     >
-      <View style={selectStyle.container}>
-        <View style={selectStyle.headerContainer}>
+      <View
+        style={{
+          backgroundColor: theme.getTheme.lightBackground,
+          borderTopRightRadius: 12,
+          borderTopLeftRadius: 12,
+          minHeight: Dimensions.get('window').height * 0.4,
+          maxHeight: Dimensions.get('window').height * 0.4,
+          width: Dimensions.get('window').width,
+          padding: 12
+        }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderBottomColor: theme.getTheme.border,
+            paddingBottom: 4
+          }}
+        >
           <Button
             title={'取消'}
             type={'text'}
@@ -57,7 +79,7 @@ const Option = ({
             titleStyle={{ fontSize: 14 }}
           />
 
-          <Text style={selectStyle.title}>{title}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{title}</Text>
 
           <Button
             title={'确定'}
@@ -67,7 +89,13 @@ const Option = ({
           />
         </View>
 
-        <View style={selectStyle.selectContainer}>
+        <View
+          style={{
+            flexDirection: 'row',
+            position: 'relative',
+            height: Dimensions.get('window').height * 0.6
+          }}
+        >
           {options.map(({ datalist, label }) => (
             <FlatList
               key={label}
@@ -102,7 +130,11 @@ const Option = ({
               renderItem={({ item, index: currentIndex }) => (
                 <TouchableOpacity
                   activeOpacity={1}
-                  style={selectStyle.selectTitle}
+                  style={{
+                    height: Dimensions.get('window').height * 0.1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
                 >
                   <Text
                     style={{
@@ -122,7 +154,15 @@ const Option = ({
 
           <View
             pointerEvents={'none'}
-            style={[StyleSheet.absoluteFill, selectStyle.bottomHeight]}
+            style={[
+              StyleSheet.absoluteFill,
+              {
+                backgroundColor: '#eeeeee9f',
+                height: 48,
+                borderRadius: 12,
+                top: Dimensions.get('window').height * 0.1 + 16
+              }
+            ]}
           />
         </View>
       </View>

@@ -6,8 +6,7 @@
 
 import { animated, useSpring } from '@react-spring/native'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import toastStyle from './style'
+import { StatusBar, StyleSheet, Text, View } from 'react-native'
 
 type ToastRef = {
   showToast?: (
@@ -55,8 +54,8 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
       pointerEvents={'none'}
       style={[
         StyleSheet.absoluteFill,
-        toastStyle.container,
         toastStyle[location],
+        { alignItems: 'center' },
         useSpring({
           from: { opacity: toastVisible ? 0 : 1 },
           to: { opacity: toastVisible ? 1 : 0 }
@@ -65,8 +64,14 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
     >
       <Text
         style={[
-          toastStyle.title,
-          { paddingVertical: title ? 12 : 0, paddingHorizontal: title ? 20 : 0 }
+          {
+            paddingVertical: title ? 12 : 0,
+            paddingHorizontal: title ? 20 : 0,
+            color: '#ffffffee',
+            borderRadius: 50,
+            backgroundColor: '#00000090',
+            fontSize: 15
+          }
         ]}
       >
         {title}
@@ -76,3 +81,19 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
 })
 
 export default Toast
+
+const toastStyle = StyleSheet.create({
+  top: {
+    justifyContent: 'flex-start',
+    top: (StatusBar.currentHeight || 0) * 3
+  },
+
+  center: {
+    justifyContent: 'center'
+  },
+
+  bottom: {
+    justifyContent: 'flex-end',
+    bottom: (StatusBar.currentHeight || 0) * 4
+  }
+})

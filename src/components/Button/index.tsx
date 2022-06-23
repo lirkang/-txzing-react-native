@@ -13,8 +13,7 @@ import {
   TouchableOpacity,
   ViewStyle
 } from 'react-native'
-import { theme } from '../../..'
-import buttonStyle from './style'
+import { theme, useForceUpdate } from '../../..'
 
 interface ButtonProps {
   title?: string | JSX.Element
@@ -37,6 +36,10 @@ const Button = ({
   image,
   disabledPress
 }: ButtonProps) => {
+  const forceUpdate = useForceUpdate()
+
+  theme.addListener(forceUpdate)
+
   function backgroundColor() {
     if (disabled) {
       return theme.getTheme.background
@@ -70,20 +73,31 @@ const Button = ({
     <TouchableOpacity
       onPress={() => (disabled ? disabledPress?.() : onPress?.())}
       style={[
-        buttonStyle.container,
         containerStyle,
         {
           backgroundColor: backgroundColor(),
-          paddingVertical:
-            type === 'clear' ? 6 : buttonStyle.container.paddingVertical,
-          paddingHorizontal:
-            type === 'clear' ? 12 : buttonStyle.container.paddingHorizontal
+          paddingVertical: type === 'clear' ? 6 : 12,
+          paddingHorizontal: type === 'clear' ? 12 : 8,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 24
         }
       ]}
     >
       {image && <Image source={image} />}
 
-      <Text style={[buttonStyle.title, titleStyle, { color: titleColor() }]}>
+      <Text
+        style={[
+          titleStyle,
+          {
+            color: titleColor(),
+            fontWeight: 'bold',
+            justifyContent: 'center',
+            fontSize: 15
+          }
+        ]}
+      >
         {title}
       </Text>
     </TouchableOpacity>

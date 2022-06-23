@@ -4,6 +4,8 @@
  * @FilePath E:\TestSpace\@txzing\react-native\src\utils\setTheme.ts
  */
 
+import { DeviceEventEmitter } from 'react-native'
+
 interface Themes {
   /** 边框和分割线颜色 */
   border?: string
@@ -31,6 +33,8 @@ interface Themes {
 class Theme {
   private theme: Themes
 
+  public UPDATE_FLAG = 'THEME_UPDATED'
+
   constructor() {
     this.theme = {
       accent: '#0285fe',
@@ -53,11 +57,20 @@ class Theme {
     Object.keys(theme).forEach(key => {
       this.theme[key as keyof Themes] = theme[key as keyof Themes]
     })
+
+    DeviceEventEmitter.emit(this.UPDATE_FLAG, this.theme)
   }
 
   /** 获取主题 */
   public get getTheme() {
     return this.theme
+  }
+
+  /** 监听主题变化 */
+  public addListener(fn?: (theme: Themes) => void) {
+    DeviceEventEmitter.addListener(this.UPDATE_FLAG, () => {
+      fn?.(this.theme)
+    })
   }
 }
 

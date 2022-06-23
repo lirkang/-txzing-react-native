@@ -7,9 +7,16 @@
  */
 
 import React from 'react'
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
+import { theme, useForceUpdate } from '../../..'
 import Modal from '../Modal'
-import optionStyle from './style'
 
 interface SelectItem {
   title: string
@@ -29,33 +36,59 @@ const Select = ({
   onItemPress,
   visible
 }: SelectProps) => {
+  const forceUpdate = useForceUpdate()
+
+  theme.addListener(forceUpdate)
+
   return (
     <Modal
       visible={visible}
       onCannel={() => onChannelPress?.(false)}
       modalStyle={{ justifyContent: 'flex-end' }}
     >
-      <View style={optionStyle.container}>
-        <ScrollView style={optionStyle.scrollContainer}>
+      <View
+        style={{
+          backgroundColor: '#ffffff',
+          borderTopRightRadius: 12,
+          borderTopLeftRadius: 12,
+          overflow: 'hidden',
+          paddingBottom: 24
+        }}
+      >
+        <ScrollView
+          style={{
+            maxHeight: Dimensions.get('window').height * 0.4,
+            borderBottomColor: '#f6f6f7',
+            borderBottomWidth: 6
+          }}
+        >
           {options.map((item, index) => (
             <TouchableOpacity
               onPress={() => {
                 item.onPress?.(index)
                 onItemPress?.(item, index)
               }}
-              style={optionStyle.itemContainer}
+              style={{
+                paddingVertical: 20,
+                borderBottomColor: theme.getTheme.border,
+                borderBottomWidth: StyleSheet.hairlineWidth
+              }}
               key={item.title}
             >
-              <Text style={optionStyle.itemTitle}>{item.title}</Text>
+              <Text style={{ textAlign: 'center', fontSize: 16 }}>
+                {item.title}
+              </Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
         <TouchableOpacity
-          style={optionStyle.channelButton}
+          style={{
+            paddingVertical: 16
+          }}
           onPress={() => onChannelPress?.(false)}
         >
-          <Text style={optionStyle.itemTitle}>{'取消'}</Text>
+          <Text style={{ textAlign: 'center', fontSize: 16 }}>{'取消'}</Text>
         </TouchableOpacity>
       </View>
     </Modal>
