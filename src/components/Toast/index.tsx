@@ -9,7 +9,7 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import toastStyle from './style'
 
-type ToastRefDTO = {
+type ToastRef = {
   showToast?: (
     title: string,
     location?: 'top' | 'center' | 'bottom',
@@ -19,7 +19,7 @@ type ToastRefDTO = {
   title?: string
 }
 
-const Toast = forwardRef<ToastRefDTO>((props, ref) => {
+const Toast = forwardRef<ToastRef>((props, ref) => {
   const [toastVisible, setToastVisible] = useState(false)
   const [title, setTitle] = useState('')
   const [location, setLocation] = useState<'top' | 'center' | 'bottom'>(

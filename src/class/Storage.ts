@@ -7,7 +7,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { isArray, uniqBy } from 'lodash'
 
-/** 存储类 */
+/** 本地存储类, 这是一个需要被继承的类, 请避免直接使用这个类 */
 export default class Storage<T = unknown> {
   /* key */
   private readonly key: string
@@ -15,12 +15,10 @@ export default class Storage<T = unknown> {
   /* 默认数据 */
   private readonly defaultStorage: T
 
-  /* 保存时发送事件 */
-  public onSave?: (data: T) => unknown
-
-  /** 清空时发送事件 */
-  public onClear?: (data: T) => unknown
-
+  /**
+   * @param key 唯一标识
+   * @param defaultStorage 默认值
+   */
   constructor(key: string, defaultStorage: T) {
     this.defaultStorage = defaultStorage
     this.key = key
@@ -32,8 +30,6 @@ export default class Storage<T = unknown> {
    */
   protected async clearStorage(): Promise<T> {
     await AsyncStorage.setItem(this.key, JSON.stringify(this.defaultStorage))
-
-    this.onClear?.(this.defaultStorage)
 
     return this.defaultStorage
   }
@@ -66,8 +62,6 @@ export default class Storage<T = unknown> {
     }
 
     await AsyncStorage.setItem(this.key, JSON.stringify(data))
-
-    this.onSave?.(data)
 
     return data
   }

@@ -18,6 +18,7 @@
     "lodash": "*",
     "react": "*",
     "react-native": "*",
+    "react-native-props": "*",
     "react-redux": "*",
     "redux": "*"
   },
@@ -32,6 +33,7 @@
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-native": "^0.69.0",
+    "react-native-props": "^1.2.3",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
     "typescript": "^4.7.4"
