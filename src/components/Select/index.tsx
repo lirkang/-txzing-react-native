@@ -28,17 +28,19 @@ interface SelectProps {
   options?: Array<SelectItem>
   onChannel?: (bool: boolean) => void
   onPress?: (data: SelectItem, index: number) => void
+  channelTitle?: string
 }
 
 const Select = ({
   options = [],
   onChannel,
   onPress,
-  visible = false
+  visible = false,
+  channelTitle = '取消'
 }: SelectProps) => {
   return (
     <Consumer>
-      {props => (
+      {theme => (
         <Modal
           visible={visible}
           onCannel={() => onChannel?.(false)}
@@ -47,8 +49,8 @@ const Select = ({
           <View
             style={{
               backgroundColor: '#ffffff',
-              borderTopRightRadius: props.borderRadius,
-              borderTopLeftRadius: props.borderRadius,
+              borderTopRightRadius: theme.borderRadius,
+              borderTopLeftRadius: theme.borderRadius,
               overflow: 'hidden',
               paddingBottom: 24
             }}
@@ -62,14 +64,14 @@ const Select = ({
             >
               {options.map((item, index) => (
                 <TouchableHighlight
-                  underlayColor={props.background}
+                  underlayColor={theme.background}
                   onPress={() => {
                     item.onPress?.(index)
                     onPress?.(item, index)
                   }}
                   style={{
                     paddingVertical: 20,
-                    borderBottomColor: props.border,
+                    borderBottomColor: theme.border,
                     borderBottomWidth: StyleSheet.hairlineWidth
                   }}
                   key={item.title}
@@ -82,12 +84,12 @@ const Select = ({
             </ScrollView>
 
             <TouchableHighlight
-              underlayColor={props.background}
+              underlayColor={theme.background}
               style={{ paddingVertical: 16 }}
               onPress={() => onChannel?.(false)}
             >
               <Text style={{ textAlign: 'center', fontSize: 16 }}>
-                {'取消'}
+                {channelTitle}
               </Text>
             </TouchableHighlight>
           </View>

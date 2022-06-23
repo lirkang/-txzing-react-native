@@ -1,6 +1,6 @@
 {
   "name": "@txzing/react-native",
-  "version": "1.1.2",
+  "version": "1.1.6",
   "description": "txzing react-native common package",
   "main": "index.ts",
   "publishConfig": {
@@ -20,6 +20,7 @@
   "license": "ISC",
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "*",
+    "@react-native-community/slider": "*",
     "@react-navigation/native": "*",
     "@react-spring/native": "*",
     "lodash": "*",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "^1.17.6",
+    "@react-native-community/slider": "^4.2.3",
     "@react-navigation/native": "^6.0.10",
     "@react-spring/native": "^9.4.5",
     "@types/lodash": "^4.14.182",

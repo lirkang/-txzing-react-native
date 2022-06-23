@@ -20,6 +20,7 @@ interface ButtonProps {
   title?: string | JSX.Element
   onPress?: () => void
   type?: 'clear' | 'default' | 'text'
+  round?: boolean
   containerStyle?: ViewStyle
   titleStyle?: TextStyle
   disabled?: boolean
@@ -35,7 +36,8 @@ const Button = ({
   titleStyle,
   disabled,
   image,
-  disabledPress
+  disabledPress,
+  round = false
 }: ButtonProps) => {
   function backgroundColor(theme: Theme) {
     if (disabled) {
@@ -68,18 +70,18 @@ const Button = ({
 
   return (
     <Consumer>
-      {props => (
+      {theme => (
         <TouchableHighlight
           onPress={() => (disabled ? disabledPress?.() : onPress?.())}
           style={[
             {
-              backgroundColor: backgroundColor(props),
+              backgroundColor: backgroundColor(theme),
               paddingVertical: type === 'clear' ? 6 : 12,
               paddingHorizontal: type === 'clear' ? 12 : 8,
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              borderRadius: props.borderRadius
+              borderRadius: round ? theme.borderRadius * 6 : theme.borderRadius
             },
             containerStyle
           ]}
@@ -91,7 +93,7 @@ const Button = ({
               style={[
                 titleStyle,
                 {
-                  color: titleColor(props),
+                  color: titleColor(theme),
                   fontWeight: 'bold',
                   justifyContent: 'center',
                   fontSize: 15

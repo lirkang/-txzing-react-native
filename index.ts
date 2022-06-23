@@ -14,6 +14,8 @@ import Dialog from './src/components/Dialog'
 import Modal from './src/components/Modal'
 import Options from './src/components/Options'
 import Select from './src/components/Select'
+import Slider from './src/components/Slider'
+import Switch from './src/components/Slider/Switch'
 import Toast from './src/components/Toast'
 import useAsyncFocusCallbackEffect from './src/hooks/useAsyncFocusCallbackEffect'
 import useForceUpdate from './src/hooks/useForceUpdate'
@@ -37,5 +39,7 @@ export {
   ThemeProvider,
   defaultTheme,
   createTheme,
-  Dialog
+  Dialog,
+  Switch,
+  Slider
 }

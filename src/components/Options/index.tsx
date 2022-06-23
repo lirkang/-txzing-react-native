@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
+import { Theme } from '../../common/Theme'
 import { Consumer } from '../../common/ThemeProvider'
 import Button from '../Button'
 import Modal from '../Modal'
@@ -27,6 +28,64 @@ interface SelectProps {
   onConfirm?: (index: number) => void
 }
 
+const Option = ({
+  data,
+  theme
+}: {
+  data: Array<{ title?: string }>
+  theme: Theme
+}) => {
+  const [index, setIndex] = useState(0)
+
+  return (
+    <FlatList
+      scrollEventThrottle={100}
+      onScroll={e => {
+        let index = Math.trunc(
+          data.length *
+            (Math.trunc(e.nativeEvent.contentOffset.y) /
+              Math.trunc(
+                e.nativeEvent.layoutMeasurement.height -
+                  Dimensions.get('window').height * 0.4
+              ))
+        )
+
+        if (index === data.length) {
+          index--
+        }
+
+        setIndex(index)
+      }}
+      data={data}
+      ListHeaderComponent={
+        <View style={{ height: Dimensions.get('window').height * 0.1 }} />
+      }
+      ListFooterComponent={
+        <View style={{ height: Dimensions.get('window').height * 0.4 }} />
+      }
+      renderItem={({ item, index: currentIndex }) => (
+        <TouchableOpacity
+          activeOpacity={1}
+          style={{
+            height: Dimensions.get('window').height * 0.1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              fontSize: index === currentIndex ? 20 : 16,
+              color: index === currentIndex ? theme.accent : theme.regularText
+            }}
+          >
+            {item.title}
+          </Text>
+        </TouchableOpacity>
+      )}
+    />
+  )
+}
+
 const Options = ({
   options = [],
   title,
@@ -34,11 +93,9 @@ const Options = ({
   onCannel,
   onConfirm
 }: SelectProps) => {
-  const [index, setIndex] = useState(0)
-
   return (
     <Consumer>
-      {props => (
+      {theme => (
         <Modal
           modalStyle={{ justifyContent: 'flex-end', alignItems: 'center' }}
           visible={visible}
@@ -46,9 +103,9 @@ const Options = ({
         >
           <View
             style={{
-              backgroundColor: props.lightBackground,
-              borderTopRightRadius: props.borderRadius,
-              borderTopLeftRadius: props.borderRadius,
+              backgroundColor: theme.lightBackground,
+              borderTopRightRadius: theme.borderRadius,
+              borderTopLeftRadius: theme.borderRadius,
               minHeight: Dimensions.get('window').height * 0.4,
               maxHeight: Dimensions.get('window').height * 0.4,
               width: Dimensions.get('window').width,
@@ -61,7 +118,7 @@ const Options = ({
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 borderBottomWidth: StyleSheet.hairlineWidth,
-                borderBottomColor: props.border,
+                borderBottomColor: theme.border,
                 paddingBottom: 4
               }}
             >
@@ -78,7 +135,6 @@ const Options = ({
                 title={'确定'}
                 type={'text'}
                 titleStyle={{ fontSize: 14 }}
-                onPress={() => onConfirm?.(index)}
               />
             </View>
 
@@ -89,59 +145,8 @@ const Options = ({
                 height: Dimensions.get('window').height * 0.6
               }}
             >
-              {options.map(datalist => (
-                <FlatList
-                  scrollEventThrottle={100}
-                  onScroll={e => {
-                    let index = Math.trunc(
-                      datalist.length *
-                        (Math.trunc(e.nativeEvent.contentOffset.y) /
-                          Math.trunc(
-                            e.nativeEvent.layoutMeasurement.height -
-                              Dimensions.get('window').height * 0.4
-                          ))
-                    )
-
-                    if (index === datalist.length) {
-                      index--
-                    }
-
-                    setIndex(index)
-                  }}
-                  data={datalist}
-                  ListHeaderComponent={
-                    <View
-                      style={{ height: Dimensions.get('window').height * 0.1 }}
-                    />
-                  }
-                  ListFooterComponent={
-                    <View
-                      style={{ height: Dimensions.get('window').height * 0.4 }}
-                    />
-                  }
-                  renderItem={({ item, index: currentIndex }) => (
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={{
-                        height: Dimensions.get('window').height * 0.1,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: index === currentIndex ? 20 : 16,
-                          color:
-                            index === currentIndex
-                              ? props.accent
-                              : props.regularText
-                        }}
-                      >
-                        {item.title}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                />
+              {options.map((data, index) => (
+                <Option data={data} theme={theme} key={index} />
               ))}
 
               <View
@@ -151,7 +156,7 @@ const Options = ({
                   {
                     backgroundColor: '#eeeeee9f',
                     height: 48,
-                    borderRadius: props.borderRadius,
+                    borderRadius: theme.borderRadius,
                     top: Dimensions.get('window').height * 0.1 + 16
                   }
                 ]}

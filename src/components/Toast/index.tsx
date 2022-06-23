@@ -52,7 +52,7 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
 
   return (
     <Consumer>
-      {props => (
+      {theme => (
         <AnimatedView
           pointerEvents={'none'}
           style={[
@@ -71,7 +71,7 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
                 paddingVertical: title ? 12 : 0,
                 paddingHorizontal: title ? 20 : 0,
                 color: '#ffffffee',
-                borderRadius: props.borderRadius,
+                borderRadius: theme.borderRadius,
                 backgroundColor: '#00000090',
                 fontSize: 15
               }

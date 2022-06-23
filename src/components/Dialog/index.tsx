@@ -36,7 +36,7 @@ const Dialog = ({
 }: DialogProps) => {
   return (
     <Consumer>
-      {props => (
+      {theme => (
         <Modal
           visible={visible}
           onCannel={onCancel}
@@ -44,8 +44,8 @@ const Dialog = ({
         >
           <View
             style={{
-              backgroundColor: props.lightBackground,
-              borderRadius: props.borderRadius,
+              backgroundColor: theme.lightBackground,
+              borderRadius: theme.borderRadius,
               overflow: 'hidden',
               width: Dimensions.get('window').width * 0.8,
               height: Dimensions.get('window').height * 0.2
@@ -55,14 +55,14 @@ const Dialog = ({
               style={{
                 height: '65%',
                 borderBottomWidth: StyleSheet.hairlineWidth,
-                borderBottomColor: props.border,
+                borderBottomColor: theme.border,
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
             >
               <Text
                 numberOfLines={2}
-                style={{ fontSize: 16, fontWeight: 'bold' }}
+                style={{ fontSize: 15, fontWeight: 'bold' }}
               >
                 {description}
               </Text>
@@ -76,7 +76,7 @@ const Dialog = ({
               }}
             >
               <TouchableHighlight
-                underlayColor={props.background}
+                underlayColor={theme.background}
                 onPress={() => onCancel(false)}
                 style={{
                   flex: 1,
@@ -97,7 +97,7 @@ const Dialog = ({
               </TouchableHighlight>
 
               <TouchableHighlight
-                underlayColor={props.background}
+                underlayColor={theme.background}
                 onPress={() => {
                   onConfirm()
 
@@ -107,7 +107,7 @@ const Dialog = ({
                 }}
                 style={[
                   {
-                    borderLeftColor: props.border,
+                    borderLeftColor: theme.border,
                     borderLeftWidth: StyleSheet.hairlineWidth,
                     flex: 1,
                     alignItems: 'center',
@@ -119,7 +119,7 @@ const Dialog = ({
                 <Text
                   style={[
                     {
-                      color: props.accent,
+                      color: theme.accent,
                       textAlign: 'center',
                       fontWeight: 'bold',
                       fontSize: 16
