@@ -16,7 +16,7 @@ import {
   View
 } from 'react-native'
 import Modal from '../Modal'
-import { Consumer } from '../Provider'
+import { Consumer } from '../../common/ThemeProvider'
 
 interface SelectItem {
   title: string

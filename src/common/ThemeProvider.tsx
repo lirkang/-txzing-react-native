@@ -5,6 +5,10 @@
  */
 
 import { createContext } from 'react'
-import { defaultTheme } from '../../common/Theme'
+import { defaultTheme } from './Theme'
 
-export const { Consumer, Provider, displayName } = createContext(defaultTheme)
+export const {
+  Consumer,
+  Provider: ThemeProvider,
+  displayName
+} = createContext(defaultTheme)

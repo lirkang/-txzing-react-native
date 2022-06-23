@@ -7,10 +7,10 @@
 import setGlobalProps from 'react-native-props'
 import Storage from './src/common/Storage'
 import { createTheme, defaultTheme } from './src/common/Theme'
+import { ThemeProvider } from './src/common/ThemeProvider'
 import Button from './src/components/Button'
 import Modal from './src/components/Modal'
 import Options from './src/components/Options'
-import { Provider } from './src/components/Provider'
 import Select from './src/components/Select'
 import Toast from './src/components/Toast'
 import useAsyncFocusCallbackEffect from './src/hooks/useAsyncFocusCallbackEffect'
@@ -44,7 +44,7 @@ export {
   Options,
   Select,
   setGlobalProps,
-  Provider,
+  ThemeProvider,
   defaultTheme,
   createTheme
 }

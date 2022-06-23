@@ -14,7 +14,7 @@ import {
   ViewStyle
 } from 'react-native'
 import { Themes } from '../../common/Theme'
-import { Consumer } from '../Provider'
+import { Consumer } from '../../common/ThemeProvider'
 
 interface ButtonProps {
   title?: string | JSX.Element

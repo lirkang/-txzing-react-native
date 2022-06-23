@@ -17,7 +17,7 @@ import {
   View,
   ViewStyle
 } from 'react-native'
-import { Consumer } from '../Provider'
+import { Consumer } from '../../common/ThemeProvider'
 
 interface ModalProps {
   visible?: boolean

@@ -17,7 +17,7 @@ import {
 } from 'react-native'
 import Button from '../Button'
 import Modal from '../Modal'
-import { Consumer } from '../Provider'
+import { Consumer } from '../../common/ThemeProvider'
 
 interface SelectProps {
   title?: string

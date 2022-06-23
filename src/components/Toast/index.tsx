@@ -7,7 +7,7 @@
 import { animated, useSpring } from '@react-spring/native'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
-import { Consumer } from '../Provider'
+import { Consumer } from '../../common/ThemeProvider'
 
 type ToastRef = {
   showToast?: (
