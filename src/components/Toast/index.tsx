@@ -71,7 +71,7 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
                 paddingVertical: title ? 12 : 0,
                 paddingHorizontal: title ? 20 : 0,
                 color: '#ffffffee',
-                borderRadius: 50,
+                borderRadius: props.borderRadius,
                 backgroundColor: '#00000090',
                 fontSize: 15
               }

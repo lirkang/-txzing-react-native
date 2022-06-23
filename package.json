@@ -1,6 +1,6 @@
 {
   "name": "@txzing/react-native",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "txzing react-native common package",
   "main": "index.ts",
   "publishConfig": {

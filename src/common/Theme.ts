@@ -25,6 +25,8 @@ export interface Themes {
   darkBackground?: string
   /** 错误警告颜色 */
   error?: string
+  /** 圆角大小 */
+  borderRadius: number
 }
 
 /** 主题 */
@@ -38,7 +40,8 @@ const defaultTheme: Themes = {
   placeholderText: '#9297ae',
   primaryText: '#1d212f',
   regularText: '#6a7388',
-  secondaryText: '#40455b'
+  secondaryText: '#40455b',
+  borderRadius: 4
 }
 
 /** 生成主题 */
@@ -46,7 +49,8 @@ function createTheme(theme: Themes) {
   const originTheme = defaultTheme
 
   Object.keys(theme).forEach(key => {
-    originTheme[key as keyof Themes] = theme[key as keyof Themes]
+    // @ts-ignore
+    originTheme[key] = theme[key]
   })
 
   return originTheme

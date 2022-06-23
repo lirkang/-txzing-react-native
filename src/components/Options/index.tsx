@@ -15,29 +15,24 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
+import { Consumer } from '../../common/ThemeProvider'
 import Button from '../Button'
 import Modal from '../Modal'
-import { Consumer } from '../../common/ThemeProvider'
 
 interface SelectProps {
   title?: string
   visible?: boolean
-  options: Array<{
-    label?: string
-    datalist: Array<{
-      title?: string
-    }>
-  }>
-  onOutsidePress?: (bool: boolean) => void
-  onConfirmPress?: (index: number) => void
+  options?: Array<Array<{ title?: string }>>
+  onCannel?: (bool: boolean) => void
+  onConfirm?: (index: number) => void
 }
 
-const Option = ({
+const Options = ({
   options = [],
   title,
   visible = false,
-  onOutsidePress,
-  onConfirmPress
+  onCannel,
+  onConfirm
 }: SelectProps) => {
   const [index, setIndex] = useState(0)
 
@@ -47,13 +42,13 @@ const Option = ({
         <Modal
           modalStyle={{ justifyContent: 'flex-end', alignItems: 'center' }}
           visible={visible}
-          onCannel={() => onOutsidePress?.(false)}
+          onCannel={() => onCannel?.(false)}
         >
           <View
             style={{
               backgroundColor: props.lightBackground,
-              borderTopRightRadius: 12,
-              borderTopLeftRadius: 12,
+              borderTopRightRadius: props.borderRadius,
+              borderTopLeftRadius: props.borderRadius,
               minHeight: Dimensions.get('window').height * 0.4,
               maxHeight: Dimensions.get('window').height * 0.4,
               width: Dimensions.get('window').width,
@@ -73,7 +68,7 @@ const Option = ({
               <Button
                 title={'取消'}
                 type={'text'}
-                onPress={() => onOutsidePress?.(false)}
+                onPress={() => onCannel?.(false)}
                 titleStyle={{ fontSize: 14 }}
               />
 
@@ -83,7 +78,7 @@ const Option = ({
                 title={'确定'}
                 type={'text'}
                 titleStyle={{ fontSize: 14 }}
-                onPress={() => onConfirmPress?.(index)}
+                onPress={() => onConfirm?.(index)}
               />
             </View>
 
@@ -94,9 +89,8 @@ const Option = ({
                 height: Dimensions.get('window').height * 0.6
               }}
             >
-              {options.map(({ datalist, label }) => (
+              {options.map(datalist => (
                 <FlatList
-                  key={label}
                   scrollEventThrottle={100}
                   onScroll={e => {
                     let index = Math.trunc(
@@ -157,7 +151,7 @@ const Option = ({
                   {
                     backgroundColor: '#eeeeee9f',
                     height: 48,
-                    borderRadius: 12,
+                    borderRadius: props.borderRadius,
                     top: Dimensions.get('window').height * 0.1 + 16
                   }
                 ]}
@@ -170,4 +164,4 @@ const Option = ({
   )
 }
 
-export default Option
+export default Options

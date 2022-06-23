@@ -9,6 +9,7 @@ import Storage from './src/common/Storage'
 import { createTheme, defaultTheme } from './src/common/Theme'
 import { ThemeProvider } from './src/common/ThemeProvider'
 import Button from './src/components/Button'
+import Dialog from './src/components/Dialog'
 import Modal from './src/components/Modal'
 import Options from './src/components/Options'
 import Select from './src/components/Select'
@@ -30,6 +31,8 @@ setGlobalProps('ScrollView', {
   style: [{ paddingVertical: 0 }]
 })('Image', {
   resizeMode: 'cover'
+})('TouchableOpacity', {
+  activeOpacity: 0.6
 })
 
 export {
@@ -46,5 +49,6 @@ export {
   setGlobalProps,
   ThemeProvider,
   defaultTheme,
-  createTheme
+  createTheme,
+  Dialog
 }

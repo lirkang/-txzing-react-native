@@ -5,12 +5,12 @@
  * @Software Visual Studio Code
  */
 
-import React from 'react'
+import React, { Fragment } from 'react'
 import {
   Image,
   Text,
   TextStyle,
-  TouchableOpacity,
+  TouchableHighlight,
   ViewStyle
 } from 'react-native'
 import { Themes } from '../../common/Theme'
@@ -69,10 +69,9 @@ const Button = ({
   return (
     <Consumer>
       {props => (
-        <TouchableOpacity
+        <TouchableHighlight
           onPress={() => (disabled ? disabledPress?.() : onPress?.())}
           style={[
-            containerStyle,
             {
               backgroundColor: backgroundColor(props),
               paddingVertical: type === 'clear' ? 6 : 12,
@@ -80,26 +79,29 @@ const Button = ({
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              borderRadius: 24
-            }
+              borderRadius: props.borderRadius
+            },
+            containerStyle
           ]}
         >
-          {image && <Image source={image} />}
+          <Fragment>
+            {image && <Image source={image} />}
 
-          <Text
-            style={[
-              titleStyle,
-              {
-                color: titleColor(props),
-                fontWeight: 'bold',
-                justifyContent: 'center',
-                fontSize: 15
-              }
-            ]}
-          >
-            {title}
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={[
+                titleStyle,
+                {
+                  color: titleColor(props),
+                  fontWeight: 'bold',
+                  justifyContent: 'center',
+                  fontSize: 15
+                }
+              ]}
+            >
+              {title}
+            </Text>
+          </Fragment>
+        </TouchableHighlight>
       )}
     </Consumer>
   )

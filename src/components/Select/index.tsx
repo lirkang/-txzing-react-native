@@ -12,11 +12,11 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableHighlight,
   View
 } from 'react-native'
-import Modal from '../Modal'
 import { Consumer } from '../../common/ThemeProvider'
+import Modal from '../Modal'
 
 interface SelectItem {
   title: string
@@ -24,31 +24,31 @@ interface SelectItem {
 }
 
 interface SelectProps {
-  visible: boolean
-  options: Array<SelectItem>
-  onChannelPress?: (bool: boolean) => void
-  onItemPress?: (data: SelectItem, index: number) => void
+  visible?: boolean
+  options?: Array<SelectItem>
+  onChannel?: (bool: boolean) => void
+  onPress?: (data: SelectItem, index: number) => void
 }
 
 const Select = ({
-  options,
-  onChannelPress,
-  onItemPress,
-  visible
+  options = [],
+  onChannel,
+  onPress,
+  visible = false
 }: SelectProps) => {
   return (
     <Consumer>
       {props => (
         <Modal
           visible={visible}
-          onCannel={() => onChannelPress?.(false)}
+          onCannel={() => onChannel?.(false)}
           modalStyle={{ justifyContent: 'flex-end' }}
         >
           <View
             style={{
               backgroundColor: '#ffffff',
-              borderTopRightRadius: 12,
-              borderTopLeftRadius: 12,
+              borderTopRightRadius: props.borderRadius,
+              borderTopLeftRadius: props.borderRadius,
               overflow: 'hidden',
               paddingBottom: 24
             }}
@@ -61,10 +61,11 @@ const Select = ({
               }}
             >
               {options.map((item, index) => (
-                <TouchableOpacity
+                <TouchableHighlight
+                  underlayColor={props.background}
                   onPress={() => {
                     item.onPress?.(index)
-                    onItemPress?.(item, index)
+                    onPress?.(item, index)
                   }}
                   style={{
                     paddingVertical: 20,
@@ -76,20 +77,19 @@ const Select = ({
                   <Text style={{ textAlign: 'center', fontSize: 16 }}>
                     {item.title}
                   </Text>
-                </TouchableOpacity>
+                </TouchableHighlight>
               ))}
             </ScrollView>
 
-            <TouchableOpacity
-              style={{
-                paddingVertical: 16
-              }}
-              onPress={() => onChannelPress?.(false)}
+            <TouchableHighlight
+              underlayColor={props.background}
+              style={{ paddingVertical: 16 }}
+              onPress={() => onChannel?.(false)}
             >
               <Text style={{ textAlign: 'center', fontSize: 16 }}>
                 {'取消'}
               </Text>
-            </TouchableOpacity>
+            </TouchableHighlight>
           </View>
         </Modal>
       )}
