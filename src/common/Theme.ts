@@ -4,7 +4,7 @@
  * @FilePath E:\TestSpace\@txzing\react-native\src\utils\setTheme.ts
  */
 
-export interface Themes {
+export interface Theme {
   /** 边框和分割线颜色 */
   border?: string
   /** 强调色 */
@@ -30,7 +30,7 @@ export interface Themes {
 }
 
 /** 主题 */
-const defaultTheme: Themes = {
+const defaultTheme: Theme = {
   accent: '#0285fe',
   background: '#f6f7fb',
   border: '#cdd0d6',
@@ -45,7 +45,7 @@ const defaultTheme: Themes = {
 }
 
 /** 生成主题 */
-function createTheme(theme: Themes) {
+function createTheme(theme: Theme) {
   const originTheme = defaultTheme
 
   Object.keys(theme).forEach(key => {

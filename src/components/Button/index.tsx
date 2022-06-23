@@ -13,7 +13,7 @@ import {
   TouchableHighlight,
   ViewStyle
 } from 'react-native'
-import { Themes } from '../../common/Theme'
+import { Theme } from '../../common/Theme'
 import { Consumer } from '../../common/ThemeProvider'
 
 interface ButtonProps {
@@ -37,7 +37,7 @@ const Button = ({
   image,
   disabledPress
 }: ButtonProps) => {
-  function backgroundColor(theme: Themes) {
+  function backgroundColor(theme: Theme) {
     if (disabled) {
       return theme.background
     }
@@ -52,7 +52,7 @@ const Button = ({
     )
   }
 
-  function titleColor(theme: Themes) {
+  function titleColor(theme: Theme) {
     if (disabled) {
       return theme.placeholderText
     }

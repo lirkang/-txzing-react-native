@@ -5,9 +5,10 @@
  */
 
 import setGlobalProps from 'react-native-props'
+import setProps from './src/common/SetProps'
 import Storage from './src/common/Storage'
 import { createTheme, defaultTheme } from './src/common/Theme'
-import { ThemeProvider } from './src/common/ThemeProvider'
+import ThemeProvider from './src/common/ThemeProvider'
 import Button from './src/components/Button'
 import Dialog from './src/components/Dialog'
 import Modal from './src/components/Modal'
@@ -19,21 +20,7 @@ import useForceUpdate from './src/hooks/useForceUpdate'
 import useKeysState from './src/hooks/useKeysState'
 import useRedux from './src/hooks/useRedux'
 
-setGlobalProps('ScrollView', {
-  showsVerticalScrollIndicator: false,
-  showsHorizontalScrollIndicator: false
-})('Text', {
-  allowFontScaling: false,
-  numberOfLines: 1
-})('TextInput', {
-  allowFontScaling: false,
-  numberOfLines: 1,
-  style: [{ paddingVertical: 0 }]
-})('Image', {
-  resizeMode: 'cover'
-})('TouchableOpacity', {
-  activeOpacity: 0.6
-})
+setProps(defaultTheme)
 
 export {
   Storage,

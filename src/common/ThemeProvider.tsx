@@ -7,8 +7,8 @@
 import { createContext } from 'react'
 import { defaultTheme } from './Theme'
 
-export const {
-  Consumer,
-  Provider: ThemeProvider,
-  displayName
-} = createContext(defaultTheme)
+const { Consumer, Provider: ThemeProvider } = createContext(defaultTheme)
+
+export default ThemeProvider
+
+export { Consumer }
