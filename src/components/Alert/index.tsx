@@ -5,8 +5,9 @@
  */
 
 import React, { forwardRef, useImperativeHandle } from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, Text, View } from 'react-native'
 import { IconInfo, IconLoading, IconSuccess } from '../../assets'
+import { Consumer } from '../../common/ThemeProvider'
 import useKeysState from '../../hooks/useKeysState'
 import Modal from '../Modal'
 
@@ -14,7 +15,7 @@ interface AlertProps {
   type?: 'success' | 'warning' | 'loading' | 'timeout' | 'default'
 }
 
-interface AlertRef {
+export interface AlertRef {
   showAlert: (
     type: AlertProps['type'],
     title: string,
@@ -38,7 +39,7 @@ const Alert = forwardRef<AlertRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     showAlert(type, title, duration) {
-      setState({ title, visible, type })
+      setState({ title, visible: true, type })
 
       if (duration) {
         timer = setTimeout(() => {
@@ -69,38 +70,48 @@ const Alert = forwardRef<AlertRef>((props, ref) => {
   }
 
   return (
-    <Modal
-      visible={visible}
-      modalStyle={{ justifyContent: 'center', alignItems: 'center' }}
-      backgroundOpacity={50}
-    >
-      <View
-        style={{
-          transform: [{ scale: 1.2 }],
-          backgroundColor: '#000000aa',
-          padding: 36,
-          borderRadius: 4,
-          paddingBottom: 40
-        }}
-      >
-        {getImage() && <Image source={getImage()} />}
-
-        <Text
-          style={[
-            StyleSheet.absoluteFill,
-            {
-              color: '#ffffffcc',
-              bottom: 4,
-              top: undefined,
-              fontSize: 16,
-              textAlign: 'center'
-            }
-          ]}
+    <Consumer>
+      {theme => (
+        <Modal
+          visible={visible}
+          modalStyle={{ justifyContent: 'center', alignItems: 'center' }}
+          backgroundOpacity={0}
         >
-          {title}
-        </Text>
-      </View>
-    </Modal>
+          <View
+            style={{
+              backgroundColor: '#00000099',
+              borderRadius: theme.borderRadius,
+              width: Dimensions.get('window').width * 0.42,
+              height: Dimensions.get('window').height * 0.2,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            {getImage() && (
+              <Image
+                source={getImage()}
+                style={{ transform: [{ scale: 0.9 }] }}
+              />
+            )}
+
+            <View style={[{ height: 16 }]} />
+
+            <Text
+              numberOfLines={2}
+              style={[
+                {
+                  color: '#ffffffcc',
+                  fontSize: 16,
+                  textAlign: 'center'
+                }
+              ]}
+            >
+              {title}
+            </Text>
+          </View>
+        </Modal>
+      )}
+    </Consumer>
   )
 })
 

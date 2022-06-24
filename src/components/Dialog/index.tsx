@@ -39,7 +39,7 @@ const Dialog = ({
       {theme => (
         <Modal
           visible={visible}
-          onCannel={onCancel}
+          onCancel={onCancel}
           modalStyle={{ justifyContent: 'center', alignItems: 'center' }}
         >
           <View

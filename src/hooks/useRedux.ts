@@ -4,8 +4,8 @@
  * @FilePath E:\WorkSpace\txzeveryapp\src\common\hook\useRedux.ts
  */
 
+import { Dispatch } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
-import type { Dispatch } from 'redux'
 
 /** 获取store和dispatch */
 function useRedux<T = unknown>(): [T, Dispatch] {

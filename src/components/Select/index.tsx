@@ -26,24 +26,24 @@ interface SelectItem {
 interface SelectProps {
   visible?: boolean
   options?: Array<SelectItem>
-  onChannel?: (bool: boolean) => void
+  onCancel?: (bool: boolean) => void
   onPress?: (data: SelectItem, index: number) => void
-  channelTitle?: string
+  cancelTitle?: string
 }
 
 const Select = ({
   options = [],
-  onChannel,
+  onCancel,
   onPress,
   visible = false,
-  channelTitle = '取消'
+  cancelTitle = '取消'
 }: SelectProps) => {
   return (
     <Consumer>
       {theme => (
         <Modal
           visible={visible}
-          onCannel={() => onChannel?.(false)}
+          onCancel={() => onCancel?.(false)}
           modalStyle={{ justifyContent: 'flex-end' }}
         >
           <View
@@ -86,10 +86,10 @@ const Select = ({
             <TouchableHighlight
               underlayColor={theme.background}
               style={{ paddingVertical: 16 }}
-              onPress={() => onChannel?.(false)}
+              onPress={() => onCancel?.(false)}
             >
               <Text style={{ textAlign: 'center', fontSize: 16 }}>
-                {channelTitle}
+                {cancelTitle}
               </Text>
             </TouchableHighlight>
           </View>

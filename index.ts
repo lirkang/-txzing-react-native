@@ -9,13 +9,14 @@ import setProps from './src/common/SetProps'
 import Storage from './src/common/Storage'
 import { createTheme, defaultTheme } from './src/common/Theme'
 import ThemeProvider from './src/common/ThemeProvider'
+import Alert from './src/components/Alert'
 import Button from './src/components/Button'
 import Dialog from './src/components/Dialog'
 import Modal from './src/components/Modal'
 import Options from './src/components/Options'
 import Select from './src/components/Select'
 import Slider from './src/components/Slider'
-import Switch from './src/components/Slider/Switch'
+import Switch from './src/components/Switch'
 import Toast from './src/components/Toast'
 import useAsyncFocusCallbackEffect from './src/hooks/useAsyncFocusCallbackEffect'
 import useForceUpdate from './src/hooks/useForceUpdate'
@@ -41,5 +42,6 @@ export {
   createTheme,
   Dialog,
   Switch,
-  Slider
+  Slider,
+  Alert
 }

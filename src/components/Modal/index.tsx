@@ -22,7 +22,7 @@ interface ModalProps {
   visible?: boolean
   children?: JSX.Element | Array<JSX.Element>
   modalStyle?: ViewStyle
-  onCannel?: (bool: false) => void
+  onCancel?: (bool: false) => void
   backgroundOpacity?: number
   dark?: boolean
   cancelable?: boolean
@@ -33,7 +33,7 @@ const Modal = ({
   visible,
   children,
   modalStyle,
-  onCannel,
+  onCancel,
   onShow,
   backgroundOpacity = 100,
   dark = true,
@@ -47,7 +47,7 @@ const Modal = ({
   return (
     <RNModal
       pointerEvents={'none'}
-      onRequestClose={() => onCannel?.(false)}
+      onRequestClose={() => onCancel?.(false)}
       visible={visible}
       animationType={'none'}
       hardwareAccelerated
@@ -65,7 +65,7 @@ const Modal = ({
         ]}
       >
         <TouchableOpacity
-          onPress={() => cancelable && onCannel?.(false)}
+          onPress={() => cancelable && onCancel?.(false)}
           activeOpacity={1}
           style={[{ backgroundColor }, StyleSheet.absoluteFill, modalStyle]}
         >
