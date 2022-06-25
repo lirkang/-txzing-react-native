@@ -15,7 +15,7 @@ import {
 import { Consumer } from '../../common/ThemeProvider'
 import Modal from '../Modal'
 
-interface DialogProps {
+export interface DialogProps {
   description?: string
   onCancel?: (bool: boolean) => void
   onConfirm?: () => void

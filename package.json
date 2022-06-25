@@ -1,6 +1,6 @@
 {
   "name": "@txzing/react-native",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "txzing react-native common package",
   "main": "index.ts",
   "publishConfig": {
@@ -27,6 +27,7 @@
     "lodash": "*",
     "react": "*",
     "react-native": "*",
+    "react-native-gesture-handler": "*",
     "react-native-props": "*",
     "react-native-slidepicker": "*",
     "react-redux": "*"

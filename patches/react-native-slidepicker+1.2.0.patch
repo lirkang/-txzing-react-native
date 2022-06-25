@@ -1,0 +1,198 @@
+diff --git a/node_modules/react-native-slidepicker/src/hoc.js b/node_modules/react-native-slidepicker/src/hoc.js
+index 7f93884..73ce3bc 100644
+--- a/node_modules/react-native-slidepicker/src/hoc.js
++++ b/node_modules/react-native-slidepicker/src/hoc.js
+@@ -1,6 +1,6 @@
+-import React, {Component} from 'react';
+-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+-import {GestureHandlerRootView} from 'react-native-gesture-handler';
++import React, { Component } from 'react';
++import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
++import { GestureHandlerRootView } from 'react-native-gesture-handler';
+ 
+ const defaultOptions = {
+   confirmText: 'Confirm',
+@@ -23,6 +23,7 @@ export function WithHeadAndMethod(WrapComponent) {
+       customHead: null,
+       pickerStyle: {},
+       values: [],
++      title: '选择'
+     };
+     constructor(props) {
+       super(props);
+@@ -63,6 +64,7 @@ export function WithHeadAndMethod(WrapComponent) {
+               cancel={this.cancel}
+               confirm={this.confirm}
+               customHead={customHead}
++              title={this.props.title}
+             />
+             <WrapComponent
+               {...this.props}
+@@ -79,7 +81,7 @@ export function WithHeadAndMethod(WrapComponent) {
+ }
+ 
+ /** ----------------------------------- Head Component ----------------------------------------- */
+-const Head = React.memo(({headOptions, customHead, confirm, cancel}) => {
++const Head = React.memo(({headOptions, customHead, confirm, cancel, title}) => {
+   if (customHead) {
+     return customHead;
+   } else {
+@@ -98,6 +100,9 @@ const Head = React.memo(({headOptions, customHead, confirm, cancel}) => {
+             {headOptions.cancelText}
+           </Text>
+         </TouchableOpacity>
++
++        <Text>{title}</Text>
++
+         <TouchableOpacity
+           style={[sts.btn, {height: headOptions.headHeight}]}
+           onPress={confirm}>
+diff --git a/node_modules/react-native-slidepicker/src/single.js b/node_modules/react-native-slidepicker/src/single.js
+index e0804ae..1bb854b 100644
+--- a/node_modules/react-native-slidepicker/src/single.js
++++ b/node_modules/react-native-slidepicker/src/single.js
+@@ -1,6 +1,6 @@
+-import React, {PureComponent} from 'react';
+-import {View, Text, StyleSheet, Animated} from 'react-native';
+-import {PanGestureHandler, State} from 'react-native-gesture-handler';
++import React, { PureComponent } from 'react';
++import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
++import { PanGestureHandler, State } from 'react-native-gesture-handler';
+ 
+ export class SingleSlide extends PureComponent {
+   static defaultProps = {
+@@ -20,7 +20,7 @@ export class SingleSlide extends PureComponent {
+   constructor(props) {
+     super(props);
+     this.init();
+-    this.state = {checkedIndex: this._deIndex};
++    this.state = { checkedIndex: this._deIndex };
+   }
+ 
+   static getDerivedStateFromProps(props) {
+@@ -30,7 +30,7 @@ export class SingleSlide extends PureComponent {
+   }
+ 
+   init = () => {
+-    const {defaultIndex, itemHeight, list} = this.props;
++    const { defaultIndex, itemHeight, list } = this.props;
+     if (defaultIndex) {
+       if (defaultIndex < 0 || defaultIndex > list.length - 1) {
+         console.warn(
+@@ -54,20 +54,20 @@ export class SingleSlide extends PureComponent {
+ 
+   /** ----------------------------------- Gesture ----------------------------------------- */
+   //滑动中
+-  _onPanGestureEvent = ({nativeEvent}) => {
+-    const {itemHeight} = this.props;
++  _onPanGestureEvent = ({ nativeEvent }) => {
++    const { itemHeight } = this.props;
+     if (
+       nativeEvent.translationY > itemHeight * this.state.checkedIndex ||
+       nativeEvent.translationY <
+-        -itemHeight * (this.props.list.length - this.state.checkedIndex - 1)
++      -itemHeight * (this.props.list.length - this.state.checkedIndex - 1)
+     ) {
+       return;
+     }
+     this.transValue.setValue(nativeEvent.translationY);
+   };
+ 
+-  _onHandlerStateChange = ({nativeEvent}) => {
+-    const {itemHeight} = this.props;
++  _onHandlerStateChange = ({ nativeEvent }) => {
++    const { itemHeight } = this.props;
+     if (nativeEvent.oldState === State.BEGAN) {
+       this.transValue.setOffset(this.transValue._value);
+     } else if (nativeEvent.oldState === State.ACTIVE) {
+@@ -83,7 +83,7 @@ export class SingleSlide extends PureComponent {
+   };
+ 
+   adjustAniValue = () => {
+-    const {itemHeight, list} = this.props;
++    const { itemHeight, list } = this.props;
+     const transvalue = this.transValue._value;
+     const count = transvalue / itemHeight;
+     if (count > 0) {
+@@ -102,7 +102,7 @@ export class SingleSlide extends PureComponent {
+   };
+ 
+   dataBack = (newIndex) => {
+-    const {done, inparindex} = this.props;
++    const { done, inparindex } = this.props;
+     if (newIndex !== this.state.checkedIndex && done) {
+       done(newIndex, inparindex);
+     }
+@@ -111,7 +111,7 @@ export class SingleSlide extends PureComponent {
+ 
+   resetTrans = () => {
+     this.transValue.setValue(0);
+-    this.setState({checkedIndex: 0});
++    this.setState({ checkedIndex: 0 });
+   };
+ 
+   /** ----------------------------------- Render ----------------------------------------- */
+@@ -123,7 +123,7 @@ export class SingleSlide extends PureComponent {
+       normalFontSize,
+       normalFontColor,
+     } = this.props;
+-    const {checkedIndex} = this.state;
++    const { checkedIndex } = this.state;
+     const isChecked = checkedIndex + offsetIndex === index;
+     const itemStyle = {
+       color: isChecked ? activeFontColor : normalFontColor,
+@@ -163,29 +163,31 @@ export class SingleSlide extends PureComponent {
+       height: itemHeight * half,
+     };
+     return (
+-      <View style={[sts.contain, {height: itemHeight * visibleNum}]}>
+-        <PanGestureHandler
+-          onGestureEvent={this._onPanGestureEvent}
+-          onHandlerStateChange={this._onHandlerStateChange}>
+-          <View style={{flex: 1}}>
+-            <Animated.View
+-              style={[sts.f1, {transform: [{translateY: this.transValue}]}]}>
+-              {finalList.map((item, index) =>
+-                this.renderItem(item, index, offsetIndex),
+-              )}
+-            </Animated.View>
+-            <View style={maskBg} />
+-            <View
+-              style={{
+-                height: itemHeight,
+-                width: '100%',
+-                backgroundColor: activeBgColor,
+-                opacity: activeBgOpacity,
+-              }}
+-            />
+-            <View style={maskBg} />
+-          </View>
+-        </PanGestureHandler>
++      <View style={[sts.contain, { height: itemHeight * visibleNum }]}>
++        <TouchableOpacity style={{ flex: 1 }} activeOpacity={1}>
++          <PanGestureHandler
++            onGestureEvent={this._onPanGestureEvent}
++            onHandlerStateChange={this._onHandlerStateChange}>
++            <View style={{ flex: 1 }}>
++              <Animated.View
++                style={[sts.f1, { transform: [{ translateY: this.transValue }] }]}>
++                {finalList.map((item, index) =>
++                  this.renderItem(item, index, offsetIndex),
++                )}
++              </Animated.View>
++              <View style={maskBg} />
++              <View
++                style={{
++                  height: itemHeight,
++                  width: '100%',
++                  backgroundColor: activeBgColor,
++                  opacity: activeBgOpacity,
++                }}
++              />
++              <View style={maskBg} />
++            </View>
++          </PanGestureHandler>
++        </TouchableOpacity>
+       </View>
+     );
+   }

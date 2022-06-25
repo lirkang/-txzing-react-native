@@ -9,7 +9,7 @@ import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { Consumer } from '../../common/ThemeProvider'
 
-interface SwitchProps {
+export interface SwitchProps {
   enabled?: boolean
   onChange?: (bool: boolean) => void
   disabled?: boolean

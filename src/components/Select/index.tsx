@@ -18,12 +18,12 @@ import {
 import { Consumer } from '../../common/ThemeProvider'
 import Modal from '../Modal'
 
-interface SelectItem {
+export interface SelectItem {
   title: string
   onPress?: (index: number) => void
 }
 
-interface SelectProps {
+export interface SelectProps {
   visible?: boolean
   options?: Array<SelectItem>
   onCancel?: (bool: boolean) => void

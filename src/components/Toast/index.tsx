@@ -9,14 +9,14 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import { Consumer } from '../../common/ThemeProvider'
 
-type ToastRef = {
-  showToast?: (
-    title: string,
+export type ToastRef = {
+  showToast: (
+    title: string | number | boolean,
     location?: 'top' | 'center' | 'bottom',
     duration?: number
   ) => void
-  hideToast?: () => void
-  title?: string
+  hideToast: () => void
+  title: string
 }
 
 const Toast = forwardRef<ToastRef>((props, ref) => {
@@ -31,7 +31,7 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     showToast(title, location, duration) {
-      setTitle(title)
+      setTitle(title.toString())
       setToastVisible(true)
       setLocation(location ?? 'center')
 
@@ -50,6 +50,11 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
     title
   }))
 
+  const style = useSpring({
+    from: { opacity: toastVisible ? 0 : 1 },
+    to: { opacity: toastVisible ? 1 : 0 }
+  })
+
   return (
     <Consumer>
       {theme => (
@@ -59,10 +64,7 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
             StyleSheet.absoluteFill,
             toastStyle[location],
             { alignItems: 'center' },
-            useSpring({
-              from: { opacity: toastVisible ? 0 : 1 },
-              to: { opacity: toastVisible ? 1 : 0 }
-            })
+            style
           ]}
         >
           <Text

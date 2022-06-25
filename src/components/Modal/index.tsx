@@ -18,7 +18,7 @@ import {
   ViewStyle
 } from 'react-native'
 
-interface ModalProps {
+export interface ModalProps {
   visible?: boolean
   children?: JSX.Element | Array<JSX.Element>
   modalStyle?: ViewStyle

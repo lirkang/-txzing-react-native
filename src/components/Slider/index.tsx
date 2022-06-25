@@ -10,7 +10,7 @@ import { View } from 'react-native'
 import { IconSlider } from '../../assets'
 import { Consumer } from '../../common/ThemeProvider'
 
-interface SliderProps {
+export interface SliderProps {
   value?: number
   onValueChange?: (number: number) => void
   onSlidingComplete?: (number: number) => void

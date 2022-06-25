@@ -6,7 +6,7 @@
  * @Software Visual Studio Code
  */
 
-import React from 'react'
+import React, { createRef } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 // @ts-ignore
 import { ParallelPicker } from 'react-native-slidepicker'
@@ -14,30 +14,42 @@ import { Consumer } from '../../common/ThemeProvider'
 import Button from '../Button'
 import Modal from '../Modal'
 
-interface SelectProps {
+type Option = { name: string; id: string | number }
+
+interface OptionsProps {
   title?: string
   visible?: boolean
-  options?: Array<Array<{ name?: string }>>
-  onCannel?: (bool: boolean) => void
-  onConfirm?: (index: number) => void
+  options?: Array<Array<Option>>
+  autoClose?: boolean
+  onCancel?: (bool: boolean) => void
+  onConfirm?: (data: Array<Array<Option>>) => void
+  onChange?: (data: Array<Array<Option>>) => void
+  value?: Array<Array<Pick<Option, 'id'>>>
+  type?: ''
 }
 
 const Options = ({
   options = [],
-  title,
+  title = '选择',
   visible = false,
-  onCannel,
-  onConfirm
-}: SelectProps) => {
+  onCancel,
+  onConfirm,
+  autoClose = false,
+  onChange,
+  value
+}: OptionsProps) => {
+  const SelectRef = createRef<any>()
+
   return (
     <Consumer>
       {theme => (
         <Modal
           visible={visible}
           modalStyle={{ justifyContent: 'flex-end' }}
-          onCancel={onCannel}
+          onCancel={onCancel}
         >
           <ParallelPicker
+            ref={SelectRef}
             pickerStyle={{
               activeBgColor: theme.background,
               activeFontColor: theme.accent,
@@ -49,6 +61,8 @@ const Options = ({
               visibleNum: 3,
               itemHeight: 64
             }}
+            value={value}
+            onceChange={onChange}
             dataSource={options}
             customHead={
               <View
@@ -60,14 +74,14 @@ const Options = ({
                   height: 64,
                   borderBottomWidth: StyleSheet.hairlineWidth,
                   borderColor: theme.border,
-                  borderTopLeftRadius: theme.borderRadius,
-                  borderTopRightRadius: theme.borderRadius
+                  borderTopLeftRadius: theme.borderRadius * 2,
+                  borderTopRightRadius: theme.borderRadius * 2
                 }}
               >
                 <Button
                   type={'text'}
                   title={'取消'}
-                  onPress={() => onCannel?.(false)}
+                  onPress={() => onCancel?.(false)}
                 />
 
                 <Text style={{ fontSize: 18, fontWeight: '500' }}>{title}</Text>
@@ -75,7 +89,11 @@ const Options = ({
                 <Button
                   type={'text'}
                   title={'确定'}
-                  onPress={() => onConfirm?.()}
+                  onPress={() => {
+                    onConfirm?.(SelectRef.current.resultArray)
+
+                    autoClose && onCancel?.(false)
+                  }}
                 />
               </View>
             }

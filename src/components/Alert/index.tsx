@@ -11,16 +11,15 @@ import { Consumer } from '../../common/ThemeProvider'
 import useKeysState from '../../hooks/useKeysState'
 import Modal from '../Modal'
 
-interface AlertProps {
-  type?: 'success' | 'warning' | 'loading' | 'timeout' | 'default'
-}
+export type AlertType =
+  | 'success'
+  | 'warning'
+  | 'loading'
+  | 'timeout'
+  | 'default'
 
 export interface AlertRef {
-  showAlert: (
-    type: AlertProps['type'],
-    title: string,
-    duration?: number
-  ) => void
+  showAlert: (type: AlertType, title: string, duration?: number) => void
   hideAlert: () => void
 }
 
@@ -28,7 +27,7 @@ const Alert = forwardRef<AlertRef>((props, ref) => {
   const [{ title, visible, type }, setState] = useKeysState<{
     title: string
     visible: boolean
-    type: AlertProps['type']
+    type: AlertType
   }>({
     title: '',
     visible: false,

@@ -6,25 +6,25 @@
 
 export interface Theme {
   /** 边框和分割线颜色 */
-  border?: string
+  border: string
   /** 强调色 */
-  accent?: string
+  accent: string
   /** 主要字体颜色 */
-  primaryText?: string
+  primaryText: string
   /** 次要字体颜色 */
-  secondaryText?: string
+  secondaryText: string
   /** 常规字体颜色 */
-  regularText?: string
+  regularText: string
   /** 占位字体颜色 */
-  placeholderText?: string
+  placeholderText: string
   /** 基础背景色 */
-  background?: string
+  background: string
   /** 亮色背景色 */
-  lightBackground?: string
+  lightBackground: string
   /** 暗色背景色 */
-  darkBackground?: string
+  darkBackground: string
   /** 错误警告颜色 */
-  error?: string
+  error: string
   /** 圆角大小 */
   borderRadius: number
 }
@@ -45,7 +45,7 @@ const defaultTheme: Theme = {
 }
 
 /** 生成主题 */
-function createTheme(theme: Theme) {
+function createTheme(theme: Partial<Theme>) {
   const originTheme = defaultTheme
 
   Object.keys(theme).forEach(key => {

@@ -16,7 +16,7 @@ import {
 import { Theme } from '../../common/Theme'
 import { Consumer } from '../../common/ThemeProvider'
 
-interface ButtonProps {
+export interface ButtonProps {
   title?: string | JSX.Element
   onPress?: () => void
   type?: 'clear' | 'default' | 'text'
