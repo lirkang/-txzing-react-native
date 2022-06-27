@@ -1,6 +1,6 @@
 {
   "name": "@txzing/react-native",
-  "version": "1.2.2",
+  "version": "1.2.5",
   "description": "txzing react-native common package",
   "main": "index.ts",
   "publishConfig": {
@@ -24,6 +24,7 @@
     "@react-navigation/native": "*",
     "@react-spring/native": "*",
     "@reduxjs/toolkit": "*",
+    "dayjs": "*",
     "lodash": "*",
     "react": "*",
     "react-native": "*",
@@ -42,6 +43,7 @@
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "@types/react-native": "^0.68.0",
+    "dayjs": "^1.11.3",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-native": "^0.69.0",

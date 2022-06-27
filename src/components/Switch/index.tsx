@@ -26,7 +26,10 @@ const Switch = ({ enabled, onChange, disabled }: SwitchProps) => {
   return (
     <Consumer>
       {theme => (
-        <TouchableOpacity onPress={() => onChange?.(!enabled)}>
+        <TouchableOpacity
+          onPress={() => onChange?.(!enabled)}
+          style={{ width: 48 }}
+        >
           <View
             style={[
               {

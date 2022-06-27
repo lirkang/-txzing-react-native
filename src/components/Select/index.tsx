@@ -51,8 +51,7 @@ const Select = ({
               backgroundColor: '#ffffff',
               borderTopRightRadius: theme.borderRadius,
               borderTopLeftRadius: theme.borderRadius,
-              overflow: 'hidden',
-              paddingBottom: 24
+              overflow: 'hidden'
             }}
           >
             <ScrollView
