@@ -14,9 +14,9 @@ import { useCallback } from 'react'
  * @param returnFn 离开页面调用的函数
  */
 function useAsyncFocusCallbackEffect(
-  fn: () => void,
+  fn: (...args: any) => void,
   deps?: Array<unknown>,
-  returnFn?: () => void
+  returnFn?: (...args: any) => void
 ) {
   useFocusEffect(
     useCallback(() => {

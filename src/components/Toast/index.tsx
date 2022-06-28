@@ -15,7 +15,7 @@ export type ToastRef = {
     location?: 'top' | 'center' | 'bottom',
     duration?: number
   ) => void
-  hideToast: () => void
+  hideToast: (...args: any) => void
   title: string
 }
 

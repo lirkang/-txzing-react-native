@@ -23,7 +23,7 @@ interface OptionsProps {
   options?: Array<Array<Option>>
   autoClose?: boolean
   onCancel?: (bool: boolean) => void
-  onConfirm?: (data: Array<Array<Option>>) => void
+  onConfirm?: (data: Array<Option>) => void
   onChange?: (data: Array<Array<Option>>) => void
   value?: Array<Array<Pick<Option, 'id'>>>
   type?: 'date' | 'custom'

@@ -18,7 +18,7 @@ import Modal from '../Modal'
 export interface DialogProps {
   description?: string
   onCancel?: (bool: boolean) => void
-  onConfirm?: () => void
+  onConfirm?: (...args: any) => void
   visible?: boolean
   confirmTitle?: string
   cancelTitle?: string
@@ -27,8 +27,8 @@ export interface DialogProps {
 
 const Dialog = ({
   description = '',
-  onCancel = () => {},
-  onConfirm = () => {},
+  onCancel,
+  onConfirm,
   visible = false,
   confirmTitle = '确定',
   cancelTitle = '取消',
@@ -77,7 +77,7 @@ const Dialog = ({
             >
               <TouchableHighlight
                 underlayColor={theme.background}
-                onPress={() => onCancel(false)}
+                onPress={() => onCancel?.(false)}
                 style={{
                   flex: 1,
                   alignItems: 'center',
@@ -99,10 +99,10 @@ const Dialog = ({
               <TouchableHighlight
                 underlayColor={theme.background}
                 onPress={() => {
-                  onConfirm()
+                  onConfirm?.()
 
                   if (autoCloseOnConfirm) {
-                    onCancel(false)
+                    onCancel?.(false)
                   }
                 }}
                 style={[

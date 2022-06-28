@@ -26,7 +26,7 @@ export interface ModalProps {
   backgroundOpacity?: number
   dark?: boolean
   cancelable?: boolean
-  onShow?: () => void
+  onShow?: (...args: any) => void
 }
 
 const Modal = ({

@@ -18,9 +18,12 @@ function setProps(theme: Theme) {
   })('TextInput', {
     allowFontScaling: false,
     numberOfLines: 1,
-    style: [{ paddingVertical: 0 }]
+    style: [{ paddingVertical: 0 }],
+    placeholderTextColor: theme.placeholderText,
+    selectionColor: theme.accent
   })('Image', {
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    fadeDuration: 0
   })('TouchableOpacity', {
     activeOpacity: 0.6
   })

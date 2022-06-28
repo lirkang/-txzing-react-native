@@ -7,7 +7,7 @@
 import setGlobalProps from 'react-native-props'
 import setProps from './src/common/SetProps'
 import Storage from './src/common/Storage'
-import { createTheme, defaultTheme } from './src/common/Theme'
+import defaultTheme from './src/common/Theme'
 import ThemeProvider from './src/common/ThemeProvider'
 import Alert from './src/components/Alert'
 import Button from './src/components/Button'
@@ -39,7 +39,6 @@ export {
   setGlobalProps,
   ThemeProvider,
   defaultTheme,
-  createTheme,
   Dialog,
   Switch,
   Slider,

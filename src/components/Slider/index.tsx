@@ -16,6 +16,7 @@ export interface SliderProps {
   onSlidingComplete?: (number: number) => void
   maxValue?: number
 }
+
 const Slider = ({
   onValueChange,
   value,
@@ -82,6 +83,7 @@ const Slider = ({
                 setImageWidth(nativeEvent.layout.width)
               }
               source={IconSlider}
+              style={{ height: 20, width: 20 }}
             />
           </View>
         </View>

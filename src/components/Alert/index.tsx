@@ -20,7 +20,7 @@ export type AlertType =
 
 export interface AlertRef {
   showAlert: (type: AlertType, title: string, duration?: number) => void
-  hideAlert: () => void
+  hideAlert: (...args: any) => void
 }
 
 const Alert = forwardRef<AlertRef>((props, ref) => {

@@ -18,14 +18,14 @@ import { Consumer } from '../../common/ThemeProvider'
 
 export interface ButtonProps {
   title?: string | JSX.Element
-  onPress?: () => void
+  onPress?: (...args: any) => void
   type?: 'clear' | 'default' | 'text'
   round?: boolean
   containerStyle?: ViewStyle
   titleStyle?: TextStyle
   disabled?: boolean
   image?: any
-  disabledPress?: () => void
+  disabledPress?: (...args: any) => void
 }
 
 const Button = ({
@@ -72,6 +72,8 @@ const Button = ({
     <Consumer>
       {theme => (
         <TouchableHighlight
+          activeOpacity={1}
+          underlayColor={backgroundColor(theme) ?? theme.lightBackground}
           onPress={() => (disabled ? disabledPress?.() : onPress?.())}
           style={[
             {

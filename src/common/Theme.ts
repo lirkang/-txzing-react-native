@@ -44,16 +44,4 @@ const defaultTheme: Theme = {
   borderRadius: 4
 }
 
-/** 生成主题 */
-function createTheme(theme: Partial<Theme>) {
-  const originTheme = defaultTheme
-
-  Object.keys(theme).forEach(key => {
-    // @ts-ignore
-    originTheme[key] = theme[key]
-  })
-
-  return originTheme
-}
-
-export { createTheme, defaultTheme }
+export default defaultTheme
