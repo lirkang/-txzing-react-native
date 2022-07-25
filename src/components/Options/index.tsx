@@ -6,11 +6,11 @@
  * @Software Visual Studio Code
  */
 
-import React, { createRef, useEffect, useState } from 'react'
+import React, { createRef, useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 // @ts-ignore
 import { ParallelPicker } from 'react-native-slidepicker'
-import { Consumer } from '../../common/ThemeProvider'
+import { Context } from '../../common/Theme'
 import useKeysState from '../../hooks/useKeysState'
 import Button from '../Button'
 import Modal from '../Modal'
@@ -24,9 +24,10 @@ interface OptionsProps {
   autoClose?: boolean
   onCancel?: (bool: boolean) => void
   onConfirm?: (data: Array<Option>) => void
-  onChange?: (data: Array<Array<Option>>) => void
+  onChange?: (data: Array<Option>) => void
   value?: Array<Array<Pick<Option, 'id'>>>
   type?: 'date' | 'custom'
+  isLeadingZero?: boolean
 }
 
 const Options = ({
@@ -38,9 +39,12 @@ const Options = ({
   autoClose = false,
   onChange,
   value,
-  type = 'custom'
+  type = 'custom',
+  isLeadingZero = true
 }: OptionsProps) => {
   const SelectRef = createRef<any>()
+
+  const theme = useContext(Context)
 
   const [option, setOption] = useState<Array<Array<Option>>>([])
 
@@ -49,6 +53,12 @@ const Options = ({
     month: 0,
     day: 0
   })
+
+  function leadingZero(number: number) {
+    const { length } = number.toString()
+
+    return isLeadingZero ? (length === 1 ? `0${number}` : number) : number
+  }
 
   function getYear() {
     const year = new Date().getFullYear()
@@ -70,7 +80,7 @@ const Options = ({
     let months: Array<Option> = []
 
     for (let lastMonth = month; lastMonth <= 12; lastMonth++) {
-      months.push({ id: lastMonth, name: lastMonth })
+      months.push({ id: leadingZero(lastMonth), name: leadingZero(lastMonth) })
     }
 
     setDateConfig({ month })
@@ -80,16 +90,16 @@ const Options = ({
     getDay()
   }
 
-  function getDay() {
+  function getDay(specificDate = dateConfig) {
     let day = 1
     let days: Array<Option> = []
 
-    const { month, year } = dateConfig
+    const { month, year } = specificDate
 
     const date = new Date(year, month, 0)
 
     for (let lastDay = day; lastDay <= date.getDate(); lastDay++) {
-      days.push({ id: lastDay, name: lastDay })
+      days.push({ id: leadingZero(lastDay), name: leadingZero(lastDay) })
     }
 
     setDateConfig({ day })
@@ -97,9 +107,11 @@ const Options = ({
     setOption(option => [option[0] ?? [], option[1] ?? [], days ?? []])
   }
 
-  function onOnceChange(data: Array<Array<Option>>) {
-    if (type === 'date') {
-      console.log(data)
+  function onOnceChange(data: Array<Option>) {
+    if (type === 'date' && data[1].id !== leadingZero(dateConfig.month)) {
+      setDateConfig({ month: Number(data[1].name), day: 1 }, getDay)
+    } else if (type === 'date' && data[0].id !== dateConfig.year) {
+      setDateConfig({ year: Number(data[0].name), month: 0, day: 1 }, getMonth)
     }
 
     onChange?.(data)
@@ -114,66 +126,70 @@ const Options = ({
   }, [])
 
   return (
-    <Consumer>
-      {theme => (
-        <Modal
-          visible={visible}
-          modalStyle={{ justifyContent: 'flex-end' }}
-          onCancel={onCancel}
-        >
-          <ParallelPicker
-            ref={SelectRef}
-            pickerStyle={{
-              activeBgColor: theme.background,
-              activeFontColor: theme.accent,
-              activeFontSize: 18,
-              normalBgColor: theme.lightBackground,
-              normalFontColor: theme.regularText,
-              normalFontSize: 16,
-              normalBgOpacity: 1,
-              visibleNum: 3,
-              itemHeight: 64
+    <Modal
+      visible={visible}
+      modalStyle={{ justifyContent: 'flex-end' }}
+      onCancel={onCancel}
+    >
+      <ParallelPicker
+        ref={SelectRef}
+        pickerStyle={{
+          activeBgColor: theme.getColor('background', 'fill'),
+          activeFontColor: theme.accent,
+          activeFontSize: 18,
+          normalBgColor: theme.getColor('fill', 'white'),
+          normalFontColor: theme.regularText,
+          normalFontSize: 16,
+          normalBgOpacity: 1,
+          visibleNum: 3,
+          itemHeight: 64
+        }}
+        value={value}
+        onceChange={onOnceChange}
+        dataSource={option}
+        customHead={
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: theme.getColor('fill', 'white'),
+              height: 64,
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              borderColor: theme.border,
+              borderTopLeftRadius: theme.borderRadius * 2,
+              borderTopRightRadius: theme.borderRadius * 2
             }}
-            value={value}
-            onceChange={onOnceChange}
-            dataSource={option}
-            customHead={
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  backgroundColor: theme.lightBackground,
-                  height: 64,
-                  borderBottomWidth: StyleSheet.hairlineWidth,
-                  borderColor: theme.border,
-                  borderTopLeftRadius: theme.borderRadius * 2,
-                  borderTopRightRadius: theme.borderRadius * 2
-                }}
-              >
-                <Button
-                  type={'text'}
-                  title={'取消'}
-                  onPress={() => onCancel?.(false)}
-                />
+          >
+            <Button
+              type={'text'}
+              title={'取消'}
+              onPress={() => onCancel?.(false)}
+            />
 
-                <Text style={{ fontSize: 18, fontWeight: '500' }}>{title}</Text>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: '500',
+                color: theme.primaryText
+              }}
+            >
+              {title}
+            </Text>
 
-                <Button
-                  type={'text'}
-                  title={'确定'}
-                  onPress={() => {
-                    onConfirm?.(SelectRef.current.resultArray)
+            <Button
+              type={'text'}
+              title={'确定'}
+              onPress={() => {
+                onConfirm?.(SelectRef.current.resultArray)
 
-                    autoClose && onCancel?.(false)
-                  }}
-                />
-              </View>
-            }
-          />
-        </Modal>
-      )}
-    </Consumer>
+                autoClose && onCancel?.(false)
+              }}
+            />
+          </View>
+        }
+      />
+    </Modal>
   )
 }
 

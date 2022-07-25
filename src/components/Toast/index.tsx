@@ -4,86 +4,85 @@
  * @FilePath E:\WorkSpace\txzeveryapp\src\component\base\Toast\index.tsx
  */
 
-import { animated, useSpring } from '@react-spring/native'
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { StatusBar, StyleSheet, Text, View } from 'react-native'
-import { Consumer } from '../../common/ThemeProvider'
+import { animated } from '@react-spring/native'
+import React, { forwardRef, useContext, useImperativeHandle } from 'react'
+import { Dimensions, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { Context } from '../../common/Theme'
+import useKeysState from '../../hooks/useKeysState'
 
 export type ToastRef = {
-  showToast: (
+  show: (
     title: string | number | boolean,
     location?: 'top' | 'center' | 'bottom',
     duration?: number
   ) => void
-  hideToast: (...args: any) => void
+
+  hide: () => void
+}
+
+interface ToastState {
   title: string
+  location: 'top' | 'center' | 'bottom'
+  visible: boolean
 }
 
 const Toast = forwardRef<ToastRef>((props, ref) => {
-  const [toastVisible, setToastVisible] = useState(false)
-  const [title, setTitle] = useState('')
-  const [location, setLocation] = useState<'top' | 'center' | 'bottom'>(
-    'center'
-  )
-  const AnimatedView = animated(View)
+  const theme = useContext(Context)
 
-  let timer: NodeJS.Timeout
-
-  useImperativeHandle(ref, () => ({
-    showToast(title, location, duration) {
-      setTitle(title.toString())
-      setToastVisible(true)
-      setLocation(location ?? 'center')
-
-      if (duration) {
-        setTimeout(() => {
-          setToastVisible(false)
-          clearTimeout(timer)
-        }, duration)
-      }
-    },
-
-    hideToast() {
-      setToastVisible(false)
-      clearTimeout(timer)
-    },
-    title
-  }))
-
-  const style = useSpring({
-    from: { opacity: toastVisible ? 0 : 1 },
-    to: { opacity: toastVisible ? 1 : 0 }
+  const [{ location, title, visible }, setState] = useKeysState<ToastState>({
+    title: '',
+    location: 'center',
+    visible: false
   })
 
+  let Timer: NodeJS.Timeout
+
+  const AnimatedView = animated(View)
+
+  function hide() {
+    setState({ location: 'center', visible: false })
+
+    clearTimeout(Timer)
+  }
+
+  useImperativeHandle(ref, () => ({
+    show(title, location = 'center', duration = 3000) {
+      setState({ title: title.toString(), location, visible: true })
+
+      setTimeout(() => {
+        hide()
+      }, duration)
+    },
+
+    hide
+  }))
+
   return (
-    <Consumer>
-      {theme => (
-        <AnimatedView
-          pointerEvents={'none'}
-          style={[
-            StyleSheet.absoluteFill,
-            toastStyle[location],
-            { alignItems: 'center' },
-            style
-          ]}
-        >
-          <Text
-            style={[
-              {
-                paddingVertical: title ? 12 : 0,
-                paddingHorizontal: title ? 20 : 0,
-                color: '#ffffffee',
-                borderRadius: theme.borderRadius,
-                backgroundColor: '#00000090',
-                fontSize: 15
-              }
-            ]}
-          >
-            {title}
-          </Text>
-        </AnimatedView>
-      )}
-    </Consumer>
+    <AnimatedView
+      pointerEvents={'none'}
+      style={[
+        StyleSheet.absoluteFill,
+        toastStyle[location],
+        { alignItems: 'center', display: visible ? 'flex' : 'none' }
+      ]}
+    >
+      <Text
+        numberOfLines={4}
+        style={[
+          {
+            paddingVertical: 12,
+            paddingHorizontal: 20,
+            color: '#ffffffee',
+            borderRadius: 2,
+            backgroundColor: '#00000090',
+            fontSize: 15,
+            maxWidth: Dimensions.get('window').width * 0.7
+          }
+        ]}
+      >
+        {title}
+      </Text>
+    </AnimatedView>
   )
 })
 

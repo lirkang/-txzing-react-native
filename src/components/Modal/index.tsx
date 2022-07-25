@@ -8,25 +8,27 @@
  * @Software Visual Studio Code
  */
 
-import { animated, useSpring } from '@react-spring/native'
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Modal as RNModal,
+  StyleProp,
   StyleSheet,
   TouchableOpacity,
-  View,
   ViewStyle
 } from 'react-native'
+import { Context } from '../../common/Theme'
 
 export interface ModalProps {
   visible?: boolean
   children?: JSX.Element | Array<JSX.Element>
-  modalStyle?: ViewStyle
+  modalStyle?: StyleProp<ViewStyle>
   onCancel?: (bool: false) => void
   backgroundOpacity?: number
   dark?: boolean
   cancelable?: boolean
   onShow?: (...args: any) => void
+  closeOnBack?: boolean
+  animationType?: 'none' | 'fade' | 'slide'
 }
 
 const Modal = ({
@@ -37,41 +39,33 @@ const Modal = ({
   onShow,
   backgroundOpacity = 100,
   dark = true,
-  cancelable = true
+  cancelable = true,
+  closeOnBack = true,
+  animationType = 'fade'
 }: ModalProps) => {
+  const theme = useContext(Context)
+
   const backgroundColor =
     (dark ? '#000000' : '#ffffff') + backgroundOpacity.toString(16)
-
-  const AnimatedView = animated(View)
 
   return (
     <RNModal
       pointerEvents={'none'}
-      onRequestClose={() => onCancel?.(false)}
+      onRequestClose={() => closeOnBack && onCancel?.(false)}
       visible={visible}
-      animationType={'none'}
+      animationType={animationType}
       hardwareAccelerated
       transparent
       statusBarTranslucent
       onShow={onShow}
     >
-      <AnimatedView
-        style={[
-          { flex: 1 },
-          useSpring({
-            from: { opacity: Number(!visible) },
-            to: { opacity: Number(visible) }
-          })
-        ]}
+      <TouchableOpacity
+        onPress={() => cancelable && onCancel?.(false)}
+        activeOpacity={1}
+        style={[{ backgroundColor }, StyleSheet.absoluteFill, modalStyle]}
       >
-        <TouchableOpacity
-          onPress={() => cancelable && onCancel?.(false)}
-          activeOpacity={1}
-          style={[{ backgroundColor }, StyleSheet.absoluteFill, modalStyle]}
-        >
-          <TouchableOpacity activeOpacity={1}>{children}</TouchableOpacity>
-        </TouchableOpacity>
-      </AnimatedView>
+        <TouchableOpacity activeOpacity={1}>{children}</TouchableOpacity>
+      </TouchableOpacity>
     </RNModal>
   )
 }

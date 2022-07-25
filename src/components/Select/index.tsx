@@ -6,7 +6,7 @@
  * @Software Visual Studio Code
  */
 
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Dimensions,
   ScrollView,
@@ -15,7 +15,7 @@ import {
   TouchableHighlight,
   View
 } from 'react-native'
-import { Consumer } from '../../common/ThemeProvider'
+import { Context } from '../../common/Theme'
 import Modal from '../Modal'
 
 export interface SelectItem {
@@ -38,63 +38,73 @@ const Select = ({
   visible = false,
   cancelTitle = '取消'
 }: SelectProps) => {
-  return (
-    <Consumer>
-      {theme => (
-        <Modal
-          visible={visible}
-          onCancel={() => onCancel?.(false)}
-          modalStyle={{ justifyContent: 'flex-end' }}
-        >
-          <View
-            style={{
-              backgroundColor: '#ffffff',
-              borderTopRightRadius: theme.borderRadius,
-              borderTopLeftRadius: theme.borderRadius,
-              overflow: 'hidden'
-            }}
-          >
-            <ScrollView
-              style={{
-                maxHeight: Dimensions.get('window').height * 0.4,
-                borderBottomColor: '#f6f6f7',
-                borderBottomWidth: 6
-              }}
-            >
-              {options.map((item, index) => (
-                <TouchableHighlight
-                  underlayColor={theme.background}
-                  onPress={() => {
-                    item.onPress?.(index)
-                    onPress?.(item, index)
-                  }}
-                  style={{
-                    paddingVertical: 20,
-                    borderBottomColor: theme.border,
-                    borderBottomWidth: StyleSheet.hairlineWidth
-                  }}
-                  key={item.title}
-                >
-                  <Text style={{ textAlign: 'center', fontSize: 16 }}>
-                    {item.title}
-                  </Text>
-                </TouchableHighlight>
-              ))}
-            </ScrollView>
+  const theme = useContext(Context)
 
+  return (
+    <Modal
+      visible={visible}
+      onCancel={() => onCancel?.(false)}
+      modalStyle={{ justifyContent: 'flex-end' }}
+    >
+      <View
+        style={{
+          backgroundColor: theme.fill,
+          borderTopRightRadius: theme.borderRadius,
+          borderTopLeftRadius: theme.borderRadius,
+          overflow: 'hidden'
+        }}
+      >
+        <ScrollView
+          style={{
+            maxHeight: Dimensions.get('window').height * 0.4,
+            borderBottomColor: theme.border,
+            borderBottomWidth: 6
+          }}
+        >
+          {options.map((item, index) => (
             <TouchableHighlight
               underlayColor={theme.background}
-              style={{ paddingVertical: 16 }}
-              onPress={() => onCancel?.(false)}
+              onPress={() => {
+                item.onPress?.(index)
+                onPress?.(item, index)
+              }}
+              style={{
+                paddingVertical: 20,
+                borderBottomColor: theme.border,
+                borderBottomWidth: StyleSheet.hairlineWidth
+              }}
+              key={item.title}
             >
-              <Text style={{ textAlign: 'center', fontSize: 16 }}>
-                {cancelTitle}
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 16,
+                  color: theme.primaryText
+                }}
+              >
+                {item.title}
               </Text>
             </TouchableHighlight>
-          </View>
-        </Modal>
-      )}
-    </Consumer>
+          ))}
+        </ScrollView>
+
+        <TouchableHighlight
+          underlayColor={theme.background}
+          style={{ paddingVertical: 16 }}
+          onPress={() => onCancel?.(false)}
+        >
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 16,
+              color: theme.primaryText
+            }}
+          >
+            {cancelTitle}
+          </Text>
+        </TouchableHighlight>
+      </View>
+    </Modal>
   )
 }
 

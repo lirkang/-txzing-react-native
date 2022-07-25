@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 /** 返回一个强制重新渲染页面的函数 */
 function useForceUpdate() {
-  const [date, setDate] = useState(Date.now())
+  const [, setDate] = useState(Date.now())
 
   return () => {
     setDate(Date.now())

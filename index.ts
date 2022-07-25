@@ -4,43 +4,34 @@
  * @FilePath E:\TestSpace\@txzing\react-native\index.ts
  */
 
-import setGlobalProps from 'react-native-props'
-import setProps from './src/common/SetProps'
-import Storage from './src/common/Storage'
-import defaultTheme from './src/common/Theme'
-import ThemeProvider from './src/common/ThemeProvider'
-import Alert from './src/components/Alert'
-import Button from './src/components/Button'
-import Dialog from './src/components/Dialog'
-import Modal from './src/components/Modal'
-import Options from './src/components/Options'
-import Select from './src/components/Select'
-import Slider from './src/components/Slider'
-import Switch from './src/components/Switch'
-import Toast from './src/components/Toast'
-import useAsyncFocusCallbackEffect from './src/hooks/useAsyncFocusCallbackEffect'
-import useForceUpdate from './src/hooks/useForceUpdate'
-import useKeysState from './src/hooks/useKeysState'
-import useRedux from './src/hooks/useRedux'
-
-setProps(defaultTheme)
-
-export {
-  Storage,
-  useAsyncFocusCallbackEffect,
-  useForceUpdate,
-  useKeysState,
-  useRedux,
-  Toast,
-  Button,
-  Modal,
-  Options,
-  Select,
-  setGlobalProps,
-  ThemeProvider,
-  defaultTheme,
-  Dialog,
-  Switch,
-  Slider,
-  Alert
-}
+export * from 'react-native-props'
+export { default as setGlobalProps } from 'react-native-props'
+export * from './src/common/Theme'
+export * from './src/components/Button'
+export { default as Button } from './src/components/Button'
+export * from './src/components/Dialog'
+export { default as Dialog } from './src/components/Dialog'
+export * from './src/components/Modal'
+export { default as Modal } from './src/components/Modal'
+export * from './src/components/Options'
+export { default as Options } from './src/components/Options'
+export * from './src/components/PullToRefresh'
+export { default as PullToRefresh } from './src/components/PullToRefresh'
+export * from './src/components/Select'
+export { default as Select } from './src/components/Select'
+export * from './src/components/SwipeList'
+export { default as SwipeList } from './src/components/SwipeList'
+export * from './src/components/Switch'
+export { default as Switch } from './src/components/Switch'
+export * from './src/components/Toast'
+export { default as Toast } from './src/components/Toast'
+export * from './src/hooks/useAsyncFocusCallbackEffect'
+export { default as useAsyncFocusCallbackEffect } from './src/hooks/useAsyncFocusCallbackEffect'
+export * from './src/hooks/useForceUpdate'
+export { default as useForceUpdate } from './src/hooks/useForceUpdate'
+export * from './src/hooks/useKeysState'
+export { default as useKeysState } from './src/hooks/useKeysState'
+export * from './src/hooks/useRedux'
+export { default as useRedux } from './src/hooks/useRedux'
+export * from './src/components/SliderView'
+export { default as SliderView } from './src/components/SliderView'

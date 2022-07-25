@@ -6,14 +6,16 @@
 
 import { useState } from 'react'
 
-type SetState<State = unknown> = (
+export type SetState<State = unknown> = (
   newState: Partial<State>,
   callback?: (state: State) => void
 ) => void
 
-type UseKeysState = <State = unknown>(
+// todo: 初始值
+
+export type UseKeysState = <State = unknown>(
   initialState: State
-) => [State, SetState<State>]
+) => [State, SetState<State>, State]
 
 /**
  * 可以只修改state中某个key的值, 仅支持Object类型的数据
@@ -28,6 +30,8 @@ const useKeysState: UseKeysState = initialState => {
 
     throw err
   } else {
+    const defaultState = initialState
+
     const [state, originSetState] = useState(initialState)
 
     const setState: SetState<typeof initialState> = (newState, callback) => {
@@ -42,7 +46,7 @@ const useKeysState: UseKeysState = initialState => {
       callback?.(callbackState)
     }
 
-    return [state, setState]
+    return [state, setState, defaultState]
   }
 }
 

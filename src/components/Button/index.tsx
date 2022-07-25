@@ -5,24 +5,26 @@
  * @Software Visual Studio Code
  */
 
-import React, { Fragment } from 'react'
+import { TinyColor } from '@ctrl/tinycolor'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import {
   Image,
+  StyleProp,
+  StyleSheet,
   Text,
   TextStyle,
   TouchableHighlight,
   ViewStyle
 } from 'react-native'
-import { Theme } from '../../common/Theme'
-import { Consumer } from '../../common/ThemeProvider'
+import { Context } from '../../common/Theme'
 
 export interface ButtonProps {
-  title?: string | JSX.Element
+  title: string | JSX.Element
   onPress?: (...args: any) => void
-  type?: 'clear' | 'default' | 'text'
+  type?: 'clear' | 'default' | 'text' | 'plain'
   round?: boolean
-  containerStyle?: ViewStyle
-  titleStyle?: TextStyle
+  containerStyle?: StyleProp<ViewStyle>
+  titleStyle?: StyleProp<TextStyle>
   disabled?: boolean
   image?: any
   disabledPress?: (...args: any) => void
@@ -39,75 +41,90 @@ const Button = ({
   disabledPress,
   round = false
 }: ButtonProps) => {
-  function backgroundColor(theme: Theme) {
-    if (disabled) {
-      return theme.background
-    }
+  const theme = useContext(Context)
 
-    if (type === 'clear') {
-      return theme.accent + '33'
-    }
+  const [backgroundColor, setBackgroundColor] = useState(theme.accent)
+  const [activeColor, setActiveColor] = useState(theme.accent)
+  const [titleColor, setTitleColor] = useState(theme.white)
+  const [borderColor, setBorderColor] = useState(theme.accent)
 
-    return (
-      containerStyle?.backgroundColor ??
-      (type === 'text' ? undefined : theme.accent)
-    )
+  function getColor() {
+    if (type === 'default') {
+      const tinyColor = new TinyColor(
+        // @ts-ignore
+        containerStyle?.backgroundColor ?? theme.accent
+      )
+
+      setActiveColor(tinyColor.mix('#141414').tint(20).toString())
+      setBackgroundColor(tinyColor.tint(20).toString())
+      // @ts-ignore
+      setTitleColor((titleStyle?.color as string) ?? theme.white)
+    } else if (type === 'clear') {
+      const tinyColor = new TinyColor(theme.accent + '33')
+
+      setActiveColor(tinyColor.tint(20).toString())
+      setBackgroundColor(tinyColor.tint(90).toString())
+      setTitleColor(theme.accent)
+      setBorderColor('#00000000')
+    } else if (type === 'text') {
+      const tinyColor = new TinyColor(theme.accent)
+
+      setActiveColor(tinyColor.tint(90).toString())
+      setBackgroundColor('#00000000')
+      setTitleColor(theme.accent)
+      setBorderColor('#00000000')
+    } else if (type === 'plain') {
+      const tinyColor = new TinyColor(theme.accent)
+
+      setActiveColor(tinyColor.tint(90).toString())
+      setBackgroundColor('#00000000')
+      setTitleColor(theme.accent)
+      setBorderColor(theme.accent)
+    }
   }
 
-  function titleColor(theme: Theme) {
-    if (disabled) {
-      return theme.placeholderText
-    }
-
-    if (titleStyle?.color) {
-      return titleStyle.color
-    }
-
-    return titleStyle?.color ?? ['text', 'clear'].includes(type)
-      ? theme.accent
-      : theme.lightBackground
-  }
+  useEffect(() => {
+    getColor()
+  }, [])
 
   return (
-    <Consumer>
-      {theme => (
-        <TouchableHighlight
-          activeOpacity={1}
-          underlayColor={backgroundColor(theme) ?? theme.lightBackground}
-          onPress={() => (disabled ? disabledPress?.() : onPress?.())}
+    <TouchableHighlight
+      activeOpacity={1}
+      underlayColor={activeColor}
+      onPress={() => (disabled ? disabledPress?.() : onPress?.())}
+      style={[
+        {
+          backgroundColor,
+          paddingVertical: type === 'clear' ? 6 : 12,
+          paddingHorizontal: type === 'clear' ? 12 : 8,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: round ? theme.borderRadius * 6 : theme.borderRadius,
+          borderColor,
+          borderWidth: StyleSheet.hairlineWidth
+        },
+        containerStyle
+      ]}
+    >
+      <Fragment>
+        {image && <Image source={image} />}
+
+        <Text
           style={[
+            titleStyle,
             {
-              backgroundColor: backgroundColor(theme),
-              paddingVertical: type === 'clear' ? 6 : 12,
-              paddingHorizontal: type === 'clear' ? 12 : 8,
-              flexDirection: 'row',
+              color: titleColor,
+              fontWeight: 'bold',
               justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: round ? theme.borderRadius * 6 : theme.borderRadius
-            },
-            containerStyle
+              fontSize: 15
+            }
           ]}
         >
-          <Fragment>
-            {image && <Image source={image} />}
-
-            <Text
-              style={[
-                titleStyle,
-                {
-                  color: titleColor(theme),
-                  fontWeight: 'bold',
-                  justifyContent: 'center',
-                  fontSize: 15
-                }
-              ]}
-            >
-              {title}
-            </Text>
-          </Fragment>
-        </TouchableHighlight>
-      )}
-    </Consumer>
+          {title}
+        </Text>
+      </Fragment>
+    </TouchableHighlight>
   )
 }
 

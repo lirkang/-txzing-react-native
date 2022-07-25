@@ -1,6 +1,6 @@
 {
   "name": "@txzing/react-native",
-  "version": "1.2.7",
+  "version": "1.5.18",
   "description": "txzing react-native common package",
   "main": "index.ts",
   "publishConfig": {
@@ -22,36 +22,28 @@
   "license": "ISC",
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "*",
-    "@react-native-community/slider": "*",
     "@react-navigation/native": "*",
-    "@react-spring/native": "*",
     "@reduxjs/toolkit": "*",
-    "dayjs": "*",
-    "lodash": "*",
-    "react": "*",
-    "react-native": "*",
     "react-native-gesture-handler": "*",
-    "react-native-props": "*",
-    "react-native-slidepicker": "*",
     "react-redux": "*"
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "^1.17.6",
-    "@react-native-community/slider": "^4.2.3",
     "@react-navigation/native": "^6.0.10",
-    "@react-spring/native": "^9.4.5",
     "@reduxjs/toolkit": "^1.8.2",
-    "@types/lodash": "^4.14.182",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "@types/react-native": "^0.68.0",
-    "dayjs": "^1.11.3",
-    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-native": "^0.69.0",
-    "react-native-props": "^1.2.3",
-    "react-native-slidepicker": "^1.2.0",
     "react-redux": "^8.0.2",
     "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@ctrl/tinycolor": "^3.4.1",
+    "@react-native-community/slider": "^4.2.3",
+    "@react-spring/native": "^9.4.5",
+    "react-native-props": "^1.2.3",
+    "react-native-slidepicker": "^1.2.0"
   }
 }

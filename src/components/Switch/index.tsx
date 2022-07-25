@@ -4,10 +4,9 @@
  * @FilePath E:\TestSpace\@txzing\react-native\src\components\Switch\index.tsx
  */
 
-import { animated, useSpring } from '@react-spring/native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { Consumer } from '../../common/ThemeProvider'
+import { Context } from '../../common/Theme'
 
 export interface SwitchProps {
   enabled?: boolean
@@ -16,49 +15,37 @@ export interface SwitchProps {
 }
 
 const Switch = ({ enabled, onChange, disabled }: SwitchProps) => {
-  const AnimatedView = animated(View)
-
-  const style = useSpring({
-    to: { marginLeft: enabled ? 20 : 0 },
-    from: { marginLeft: enabled ? 0 : 20 }
-  })
+  const theme = useContext(Context)
 
   return (
-    <Consumer>
-      {theme => (
-        <TouchableOpacity
-          onPress={() => onChange?.(!enabled)}
-          style={{ width: 48 }}
-        >
-          <View
-            style={[
-              {
-                position: 'relative',
-                backgroundColor: enabled ? theme.accent : theme.border,
-                borderRadius: theme.borderRadius * 8,
-                width: 48,
-                padding: 4
-              }
-            ]}
-          >
-            <AnimatedView
-              style={[
-                {
-                  backgroundColor: theme.lightBackground,
-                  width: 20,
-                  height: 20,
-                  borderRadius: theme.borderRadius * 8,
-                  marginLeft: enabled ? 20 : 0
-                },
-                style
-              ]}
-            >
-              <></>
-            </AnimatedView>
-          </View>
-        </TouchableOpacity>
-      )}
-    </Consumer>
+    <TouchableOpacity
+      onPress={() => onChange?.(!enabled)}
+      style={{ width: 48 }}
+    >
+      <View
+        style={[
+          {
+            position: 'relative',
+            backgroundColor: enabled ? theme.accent : theme.border,
+            borderRadius: theme.borderRadius * 8,
+            width: 48,
+            padding: 4
+          }
+        ]}
+      >
+        <View
+          style={[
+            {
+              backgroundColor: theme.white,
+              width: 20,
+              height: 20,
+              borderRadius: theme.borderRadius * 8,
+              marginLeft: enabled ? 20 : 0
+            }
+          ]}
+        />
+      </View>
+    </TouchableOpacity>
   )
 }
 
