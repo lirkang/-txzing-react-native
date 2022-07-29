@@ -9,7 +9,7 @@
 import React, { useContext } from 'react'
 import {
   Dimensions,
-  ScrollView,
+  FlatList,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -27,14 +27,12 @@ export interface SelectProps {
   visible?: boolean
   options?: Array<SelectItem>
   onCancel?: (bool: boolean) => void
-  onPress?: (data: SelectItem, index: number) => void
   cancelTitle?: string
 }
 
 const Select = ({
   options = [],
   onCancel,
-  onPress,
   visible = false,
   cancelTitle = '取消'
 }: SelectProps) => {
@@ -44,7 +42,7 @@ const Select = ({
     <Modal
       visible={visible}
       onCancel={() => onCancel?.(false)}
-      modalStyle={{ justifyContent: 'flex-end' }}
+      style={{ justifyContent: 'flex-end' }}
     >
       <View
         style={{
@@ -54,58 +52,47 @@ const Select = ({
           overflow: 'hidden'
         }}
       >
-        <ScrollView
-          style={{
-            maxHeight: Dimensions.get('window').height * 0.4,
-            borderBottomColor: theme.border,
-            borderBottomWidth: 6
-          }}
-        >
-          {options.map((item, index) => (
-            <TouchableHighlight
-              underlayColor={theme.background}
-              onPress={() => {
-                item.onPress?.(index)
-                onPress?.(item, index)
-              }}
-              style={{
-                paddingVertical: 20,
-                borderBottomColor: theme.border,
-                borderBottomWidth: StyleSheet.hairlineWidth
-              }}
-              key={item.title}
-            >
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 16,
-                  color: theme.primaryText
-                }}
-              >
-                {item.title}
-              </Text>
-            </TouchableHighlight>
-          ))}
-        </ScrollView>
+        <FlatList
+          style={{ maxHeight: Dimensions.get('window').height * 0.4 }}
+          data={options}
+          renderItem={({ index, item: { title, onPress } }) => (
+            <Item title={title} onPress={() => onPress?.(index)} />
+          )}
+        />
 
-        <TouchableHighlight
-          underlayColor={theme.background}
-          style={{ paddingVertical: 16 }}
-          onPress={() => onCancel?.(false)}
-        >
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 16,
-              color: theme.primaryText
-            }}
-          >
-            {cancelTitle}
-          </Text>
-        </TouchableHighlight>
+        <View style={{ height: 12, backgroundColor: theme.border }} />
+        <Item title={cancelTitle} onPress={() => onCancel?.(false)} />
       </View>
     </Modal>
   )
 }
+
+const Item = ({ title, onPress }: SelectItem) => {
+  const theme = useContext(Context)
+
+  return (
+    <TouchableHighlight
+      underlayColor={theme.border}
+      style={{
+        paddingVertical: 16,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: theme.border
+      }}
+      onPress={onPress}
+    >
+      <Text
+        style={{
+          textAlign: 'center',
+          fontSize: 16,
+          color: theme.primaryText
+        }}
+      >
+        {title}
+      </Text>
+    </TouchableHighlight>
+  )
+}
+
+Select.Item = Item
 
 export default Select

@@ -4,7 +4,6 @@
  * @FilePath E:\WorkSpace\txzeveryapp\src\component\base\Toast\index.tsx
  */
 
-import { animated } from '@react-spring/native'
 import React, { forwardRef, useContext, useImperativeHandle } from 'react'
 import { Dimensions, StatusBar, StyleSheet, Text, View } from 'react-native'
 import { Context } from '../../common/Theme'
@@ -37,8 +36,6 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
 
   let Timer: NodeJS.Timeout
 
-  const AnimatedView = animated(View)
-
   function hide() {
     setState({ location: 'center', visible: false })
 
@@ -58,7 +55,7 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
   }))
 
   return (
-    <AnimatedView
+    <View
       pointerEvents={'none'}
       style={[
         StyleSheet.absoluteFill,
@@ -73,7 +70,7 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
             paddingVertical: 12,
             paddingHorizontal: 20,
             color: '#ffffffee',
-            borderRadius: 2,
+            borderRadius: theme.borderRadius * 2,
             backgroundColor: '#00000090',
             fontSize: 15,
             maxWidth: Dimensions.get('window').width * 0.7
@@ -82,7 +79,7 @@ const Toast = forwardRef<ToastRef>((props, ref) => {
       >
         {title}
       </Text>
-    </AnimatedView>
+    </View>
   )
 })
 

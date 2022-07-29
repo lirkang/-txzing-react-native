@@ -1,6 +1,6 @@
 {
   "name": "@txzing/react-native",
-  "version": "1.5.18",
+  "version": "1.5.25",
   "description": "txzing react-native common package",
   "main": "index.ts",
   "publishConfig": {
@@ -21,15 +21,10 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "@react-native-async-storage/async-storage": "*",
-    "@react-navigation/native": "*",
     "@reduxjs/toolkit": "*",
-    "react-native-gesture-handler": "*",
     "react-redux": "*"
   },
   "devDependencies": {
-    "@react-native-async-storage/async-storage": "^1.17.6",
-    "@react-navigation/native": "^6.0.10",
     "@reduxjs/toolkit": "^1.8.2",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
@@ -42,8 +37,8 @@
   "dependencies": {
     "@ctrl/tinycolor": "^3.4.1",
     "@react-native-community/slider": "^4.2.3",
-    "@react-spring/native": "^9.4.5",
     "react-native-props": "^1.2.3",
-    "react-native-slidepicker": "^1.2.0"
+    "react-native-slidepicker": "^1.2.0",
+    "react-native-svg": "^12.4.3"
   }
 }

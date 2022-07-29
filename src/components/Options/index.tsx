@@ -128,7 +128,7 @@ const Options = ({
   return (
     <Modal
       visible={visible}
-      modalStyle={{ justifyContent: 'flex-end' }}
+      style={{ justifyContent: 'flex-end' }}
       onCancel={onCancel}
     >
       <ParallelPicker

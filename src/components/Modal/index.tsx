@@ -8,7 +8,7 @@
  * @Software Visual Studio Code
  */
 
-import React, { useContext } from 'react'
+import React, { Fragment } from 'react'
 import {
   Modal as RNModal,
   StyleProp,
@@ -16,57 +16,61 @@ import {
   TouchableOpacity,
   ViewStyle
 } from 'react-native'
-import { Context } from '../../common/Theme'
 
 export interface ModalProps {
   visible?: boolean
   children?: JSX.Element | Array<JSX.Element>
-  modalStyle?: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
   onCancel?: (bool: false) => void
   backgroundOpacity?: number
   dark?: boolean
-  cancelable?: boolean
-  onShow?: (...args: any) => void
-  closeOnBack?: boolean
-  animationType?: 'none' | 'fade' | 'slide'
+  mode?: 'modal' | 'view'
 }
 
 const Modal = ({
   visible,
   children,
-  modalStyle,
+  style = {
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999999
+  },
   onCancel,
-  onShow,
   backgroundOpacity = 100,
   dark = true,
-  cancelable = true,
-  closeOnBack = true,
-  animationType = 'fade'
+  mode = 'modal'
 }: ModalProps) => {
-  const theme = useContext(Context)
-
   const backgroundColor =
     (dark ? '#000000' : '#ffffff') + backgroundOpacity.toString(16)
 
-  return (
-    <RNModal
-      pointerEvents={'none'}
-      onRequestClose={() => closeOnBack && onCancel?.(false)}
-      visible={visible}
-      animationType={animationType}
-      hardwareAccelerated
-      transparent
-      statusBarTranslucent
-      onShow={onShow}
+  const Container = () => (
+    <TouchableOpacity
+      onPress={() => onCancel?.(false)}
+      activeOpacity={1}
+      style={[{ backgroundColor }, StyleSheet.absoluteFill, style]}
     >
-      <TouchableOpacity
-        onPress={() => cancelable && onCancel?.(false)}
-        activeOpacity={1}
-        style={[{ backgroundColor }, StyleSheet.absoluteFill, modalStyle]}
-      >
-        <TouchableOpacity activeOpacity={1}>{children}</TouchableOpacity>
-      </TouchableOpacity>
-    </RNModal>
+      <TouchableOpacity activeOpacity={1}>{children}</TouchableOpacity>
+    </TouchableOpacity>
+  )
+
+  return (
+    <Fragment>
+      {mode === 'modal' ? (
+        <RNModal
+          pointerEvents={'none'}
+          // onRequestClose={() => onCancel?.(false)}
+          visible={visible}
+          animationType={'fade'}
+          hardwareAccelerated
+          transparent
+          statusBarTranslucent
+        >
+          <Container />
+        </RNModal>
+      ) : (
+        <Fragment>{visible && <Container />}</Fragment>
+      )}
+    </Fragment>
   )
 }
 

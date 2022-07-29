@@ -4,70 +4,51 @@
  * @FilePath E:\TestSpace\@txzing\react-native\src\components\Dialog\index.tsx
  */
 
-import React, { createRef, Fragment, useContext, useState } from 'react'
+import React, { Fragment, useContext } from 'react'
 import {
   ColorValue,
   Dimensions,
-  Image,
-  ImageSourcePropType,
   StyleSheet,
   Text,
-  TextInput,
-  TextInputProps,
   TouchableHighlight,
   View
 } from 'react-native'
 import { Context } from '../../common/Theme'
 import Modal from '../Modal'
 
-export interface DialogProps {
-  description?: string
-  onCancel?: (bool: boolean) => void
-  onConfirm?: (...args: any) => void
-  visible?: boolean
-  confirmTitle?: string
-  cancelTitle?: string
-  autoCloseOnConfirm?: boolean
-  singleButton?: boolean
-  containInput?: boolean
-  textInputProps?: TextInputProps
+export interface DialogButtonArray {
   title?: string
-  clearImageSource?: ImageSourcePropType
-  cancelable?: boolean
+  primary?: boolean
+  onPress?: () => void
+}
+
+export interface DialogProps {
+  visible?: boolean
+  title?: string
+  children?: JSX.Element | Array<JSX.Element>
+  buttons?: Array<DialogButtonArray>
 }
 
 interface ButtonProps {
   onPress?: () => void
   title?: string
-  underlayColor?: ColorValue
   textColor?: ColorValue
 }
 
+const defaultButtons = [{ title: '取消' }, { title: '确定', primary: true }]
+
 const Dialog = ({
-  description = '',
-  onCancel,
-  onConfirm,
   visible = false,
-  confirmTitle = '确定',
-  cancelTitle = '取消',
-  autoCloseOnConfirm = true,
-  singleButton = false,
-  containInput = false,
-  textInputProps = {},
   title,
-  clearImageSource,
-  cancelable = true
+  children = <></>,
+  buttons = defaultButtons
 }: DialogProps) => {
   const theme = useContext(Context)
-  const InputRef = createRef<TextInput>()
 
-  const [error_text, setError_text] = useState('')
-  const [value, setValue] = useState('')
-
-  function Button({ onPress, title, textColor, underlayColor }: ButtonProps) {
+  function Button({ onPress, title, textColor }: ButtonProps) {
     return (
       <TouchableHighlight
-        underlayColor={underlayColor}
+        underlayColor={theme.border}
         onPress={onPress}
         style={{
           flex: 1,
@@ -91,166 +72,63 @@ const Dialog = ({
     )
   }
 
-  const newLocal = () => {
-    console.log(InputRef.current?.state)
-    onConfirm?.(value, setError_text)
-
-    autoCloseOnConfirm && onCancel?.(false)
-  }
-
   return (
-    <Modal
-      visible={visible}
-      onCancel={onCancel}
-      cancelable={cancelable}
-      modalStyle={{ justifyContent: 'center', alignItems: 'center' }}
-    >
+    <Modal visible={visible} backgroundOpacity={155}>
       <View
         style={{
           backgroundColor: theme.background,
-          borderRadius: theme.borderRadius,
+          borderRadius: theme.borderRadius * 2,
           overflow: 'hidden',
-          width: Dimensions.get('window').width * 0.8,
-          height: Dimensions.get('window').height * 0.2
+          width: Dimensions.get('window').width * 0.8
         }}
       >
         <View
           style={{
-            height: '65%',
             borderBottomWidth: StyleSheet.hairlineWidth,
             borderBottomColor: theme.border,
-            justifyContent: 'center',
-            alignItems: 'center',
             backgroundColor: theme.background
           }}
         >
-          {containInput ? (
-            <View
+          {Boolean(title) && (
+            <Text
               style={[
                 {
-                  paddingHorizontal: 24,
-                  width: '100%',
-                  alignItems: 'center',
-                  marginBottom: 12
+                  color: theme.primaryText,
+                  fontWeight: '500',
+                  textAlign: 'center',
+                  fontSize: 16,
+                  paddingVertical: 12
                 }
               ]}
             >
-              <Text
-                style={[
-                  {
-                    fontWeight: '500',
-                    paddingBottom: 12,
-                    fontSize: 16,
-                    color: theme.primaryText
-                  }
-                ]}
-              >
-                {title}
-              </Text>
-
-              <View
-                style={[
-                  {
-                    position: 'relative',
-                    width: '100%',
-                    justifyContent: 'center'
-                  }
-                ]}
-              >
-                <TextInput
-                  ref={InputRef}
-                  value={value}
-                  {...textInputProps}
-                  onChangeText={v => {
-                    textInputProps.onChangeText?.(v)
-                    setValue(v)
-                  }}
-                  style={[
-                    {
-                      borderRadius: theme.borderRadius,
-                      borderWidth: StyleSheet.hairlineWidth,
-                      borderColor: theme.accent,
-                      width: '100%',
-                      paddingVertical: 6
-                    },
-                    textInputProps.style
-                  ]}
-                />
-
-                {Boolean(clearImageSource && value.length) && (
-                  <Image
-                    style={[{ position: 'absolute', right: 12 }]}
-                    source={clearImageSource!}
-                  />
-                )}
-              </View>
-
-              {Boolean(error_text) && (
-                <Text
-                  numberOfLines={2}
-                  style={[
-                    {
-                      position: 'absolute',
-                      color: theme.error,
-                      right: 20,
-                      bottom: -16,
-                      fontSize: 12
-                    }
-                  ]}
-                >
-                  {error_text}
-                </Text>
-              )}
-            </View>
-          ) : (
-            <Text
-              numberOfLines={2}
-              style={{
-                fontSize: 16,
-                fontWeight: 'bold',
-                textAlign: 'center',
-                color: theme.primaryText
-              }}
-            >
-              {description}
+              {title}
             </Text>
           )}
+
+          {children}
         </View>
 
         <View
           style={{
-            height: '35%',
             flexDirection: 'row',
-            alignItems: 'center',
+            maxHeight: Dimensions.get('window').height * 0.1,
             backgroundColor: theme.border
           }}
         >
-          {singleButton ? (
-            <Button
-              title={confirmTitle}
-              underlayColor={theme.fill}
-              textColor={theme.accent}
-              onPress={newLocal}
-            />
-          ) : (
+          {buttons.map(({ onPress, primary, title }, index) => (
             <Fragment>
               <Button
-                title={cancelTitle}
-                textColor={theme.primaryText}
-                underlayColor={theme.fill}
-                onPress={() => onCancel?.(false)}
+                key={title}
+                onPress={onPress}
+                textColor={primary ? theme.accent : theme.primaryText}
+                title={title}
               />
 
-              <View style={{ width: StyleSheet.hairlineWidth }} />
-
-              <Button
-                title={confirmTitle}
-                textColor={theme.accent}
-                underlayColor={theme.fill}
-                onPress={newLocal}
-              />
+              {index <= buttons.length && (
+                <View style={[{ width: StyleSheet.hairlineWidth }]} />
+              )}
             </Fragment>
-          )}
+          ))}
         </View>
       </View>
     </Modal>

@@ -20,9 +20,8 @@ import { Context } from '../../common/Theme'
 
 export interface ButtonProps {
   title: string | JSX.Element
-  onPress?: (...args: any) => void
+  onPress?: () => void
   type?: 'clear' | 'default' | 'text' | 'plain'
-  round?: boolean
   containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
   disabled?: boolean
@@ -38,8 +37,7 @@ const Button = ({
   titleStyle,
   disabled,
   image,
-  disabledPress,
-  round = false
+  disabledPress
 }: ButtonProps) => {
   const theme = useContext(Context)
 
@@ -83,9 +81,7 @@ const Button = ({
     }
   }
 
-  useEffect(() => {
-    getColor()
-  }, [])
+  useEffect(getColor, [])
 
   return (
     <TouchableHighlight
@@ -100,7 +96,7 @@ const Button = ({
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          borderRadius: round ? theme.borderRadius * 6 : theme.borderRadius,
+          borderRadius: theme.borderRadius * 6,
           borderColor,
           borderWidth: StyleSheet.hairlineWidth
         },

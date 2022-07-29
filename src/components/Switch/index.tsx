@@ -19,6 +19,7 @@ const Switch = ({ enabled, onChange, disabled }: SwitchProps) => {
 
   return (
     <TouchableOpacity
+      activeOpacity={0.9}
       onPress={() => onChange?.(!enabled)}
       style={{ width: 48 }}
     >
