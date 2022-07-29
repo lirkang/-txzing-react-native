@@ -12,22 +12,22 @@ const Check = () => {
   const theme = useContext(Context)
 
   return (
-    <Svg width='18' height='18'>
+    <Svg width={20} height={20}>
       <Circle
-        cx='9'
-        cy='9'
-        r='8'
+        cx={10}
+        cy={10}
+        r={9}
         fill={theme.accent}
         stroke={theme.accent}
         strokeWidth={1}
       />
 
       <Polyline
-        points='4,10 7,13 14,6'
+        points={'5,11 8,14 15,7'}
         stroke={theme.white}
-        stroke-width='1'
-        fill='none'
-        stroke-linecap='round'
+        stroke-width={1}
+        fill={'none'}
+        stroke-linecap={'round'}
       />
     </Svg>
   )
